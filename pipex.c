@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <stdlib.h>
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
@@ -19,7 +20,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 char *check_cmd(char *cmd)
 {
-	char *path[] = {"/bin/", "/sbin/", NULL};
+	char *path[] = {"/bin/", "/sbin/", "/usr/bin/", NULL};
 	int i = 0;
 	int fd;
 
@@ -43,6 +44,11 @@ int main(int argc, char *argv[])
 {
 	int fd1;
 	int fd2;
+	char *cmd1;
+	char *cmd2;
+	char *arg1[] = {argv[2], argv[1], NULL};
+	char *arg2[] = {argv[3], argv[4], NULL};
+	int pid;
 
 	if (argc != 5)
 	{
@@ -56,7 +62,23 @@ int main(int argc, char *argv[])
 	{
 		printf("%d\n",errno);
 		perror("Error :");
-		return (5);
+		return (2);
 	}
+	cmd1 = check_cmd(argv[2]);
+	cmd2 = check_cmd(argv[3]);
+	if (!cmd1 || !cmd2)
+	{
+		printf("invalid command\n");
+		return 3;
+	}
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("Fork failed");
+	}
+	else if (pid == 0)
+		execve(cmd1, arg1, NULL);
+	else
+		execve(cmd2, arg2, NULL);
 	return (0);
 }
