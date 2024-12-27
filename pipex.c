@@ -3,24 +3,12 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*re;
-
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	re = (char *)malloc((strlen(s1) + strlen(s2) + 1) * sizeof(char));
-	if (re == NULL)
-		return (NULL);
-	strlcpy(re, s1, strlen(s1) + 1);
-	strlcat(re, s2, strlen(s1) + strlen(s2) + 1);
-	return (re);
-}
+#include "libft/libft.h"
+#include <fcntl.h>
 
 char *check_cmd(char *cmd)
 {
-	char *path[] = {"/bin/", "/sbin/", "/usr/bin/", NULL};
+	char *path[] = {"/bin/", "/sbin/", "/usr/bin/", "/usr/sbin/", "/usr/local/bin/",NULL};
 	int i = 0;
 	int fd;
 
@@ -43,11 +31,12 @@ char *check_cmd(char *cmd)
 int main(int argc, char *argv[])
 {
 	int fd1;
+	char str[1024];
 	int fd2;
 	char *cmd1;
 	char *cmd2;
-	char *arg1[] = {argv[2], argv[1], NULL};
-	char *arg2[] = {argv[3], argv[4], NULL};
+	char **arg1 = ft_split(argv[2], ' ');
+	char **arg2 = ft_split(argv[3], ' ');
 	int pid;
 
 	if (argc != 5)
@@ -64,8 +53,8 @@ int main(int argc, char *argv[])
 		perror("Error :");
 		return (2);
 	}
-	cmd1 = check_cmd(argv[2]);
-	cmd2 = check_cmd(argv[3]);
+	cmd1 = check_cmd(arg1[0]);
+	cmd2 = check_cmd(arg2[0]);
 	if (!cmd1 || !cmd2)
 	{
 		printf("invalid command\n");
@@ -77,8 +66,18 @@ int main(int argc, char *argv[])
 		perror("Fork failed");
 	}
 	else if (pid == 0)
+	{
+		fd1 = open(argv[1], O_RDONLY);
+		dup2(fd1 , 0);
+		close(fd1);
 		execve(cmd1, arg1, NULL);
+	}
 	else
+	{
+		fd2 = open(argv[4], O_WRONLY);
+		dup2(fd2, 1);
+		close(fd2);
 		execve(cmd2, arg2, NULL);
+	}
 	return (0);
 }

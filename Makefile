@@ -1,7 +1,7 @@
 NAME=pipex
 
 all:
-	gcc pipex.c -o pipex
+	gcc libft/libft.a pipex.c -o pipex
 clean:
 	rm pipex
 fclean: $(clean)
