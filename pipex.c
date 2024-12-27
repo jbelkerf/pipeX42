@@ -31,8 +31,9 @@ char *check_cmd(char *cmd)
 int main(int argc, char *argv[])
 {
 	int fd1;
-	char str[1024];
 	int fd2;
+	int pipefd[2];
+	char str[1024];
 	char *cmd1;
 	char *cmd2;
 	char **arg1 = ft_split(argv[2], ' ');
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
 		printf("too much or too few args");
 		return (1);
 	}
+	pipe(pipefd);
 	fd1 = access(argv[1], F_OK);
 	fd2 = access(argv[4], F_OK);
 	if (fd1 == -1 || fd2 == -1)
@@ -69,13 +71,17 @@ int main(int argc, char *argv[])
 	{
 		fd1 = open(argv[1], O_RDONLY);
 		dup2(fd1 , 0);
+		close(pipefd[0]);
+		dup2(pipefd[1], 1);
 		close(fd1);
 		execve(cmd1, arg1, NULL);
 	}
 	else
 	{
-		fd2 = open(argv[4], O_WRONLY);
+		fd2 = open(argv[4], O_WRONLY | O_TRUNC);
 		dup2(fd2, 1);
+		close(pipefd[1]);
+		dup2(pipefd[0], 0);
 		close(fd2);
 		execve(cmd2, arg2, NULL);
 	}
