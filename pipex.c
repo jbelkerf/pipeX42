@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		fd2 = open(argv[4], O_WRONLY | O_TRUNC);
+		fd2 = open(argv[4], O_TRUNC | O_WRONLY);
 		dup2(fd2, 1);
 		close(pipefd[1]);
 		dup2(pipefd[0], 0);
