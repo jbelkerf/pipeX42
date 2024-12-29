@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "header.h"
 
 /*
  * the strlcpy copy from src to dest respecting a giving size and ensuring 

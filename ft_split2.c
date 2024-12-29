@@ -49,7 +49,7 @@ static char	**fill_tab(char **re, char *ss, char c, int w_c)
 	i = 0;
 	while (i < w_c)
 	{
-		re[i] = (char *)malloc(c_c(ss, c) * sizeof(char));
+		re[i] = (char *)malloc((c_c(ss, c) + 1) * sizeof(char));
 		if (re[i] == 0)
 			return (h_fail(re, i));
 		j = 0;
@@ -61,7 +61,8 @@ static char	**fill_tab(char **re, char *ss, char c, int w_c)
 			ss++;
 			j++;
 		}
-		re[i][j] = 0;
+		re[i][j] = '/';
+		re[i][j + 1]= 0;
 		if (*ss)
 			ss++;
 		i++;
@@ -89,7 +90,7 @@ static int	c_w(char *ss, char c)
 	return (i);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split2(char const *s, char c)
 {
 	char	**re;
 	char	*ss;

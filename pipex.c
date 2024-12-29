@@ -1,34 +1,33 @@
-#include <unistd.h>
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <stdlib.h>
-#include "libft/libft.h"
-#include <fcntl.h>
+#include "header.h"
 
-char *check_cmd(char *cmd)
+char *check_cmd(char *cmd, char **envp)
 {
-	char *path[] = {"/bin/", "/sbin/", "/usr/bin/", "/usr/sbin/", "/usr/local/bin/",NULL};
+	char *path;
+	char **paths;
 	int i = 0;
 	int fd;
 
-	while (path[i])
+	while (envp[i])
 	{
-		path[i] = ft_strjoin(path[i], cmd);
+		if (!ft_strncmp("PATH", envp[i], 4))
+			path = envp[i];
 		i++;
 	}
+	path = path +5;
 	i = 0;
-	while (path[i])
+	paths = ft_split2(path, ':');
+	while (paths[i])
 	{
-		fd = access(path[i], X_OK);
+		paths[i] = ft_strjoin(paths[i], cmd);
+		fd = access(paths[i], X_OK);
 		if (fd != -1)
-			return (path[i]);
+			return (paths[i]);
 		i++;
 	}
 	return (NULL);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char *envp[])
 {
 	int fd1;
 	int fd2;
@@ -55,8 +54,8 @@ int main(int argc, char *argv[])
 		perror("Error :");
 		return (2);
 	}
-	cmd1 = check_cmd(arg1[0]);
-	cmd2 = check_cmd(arg2[0]);
+	cmd1 = check_cmd(arg1[0], envp);
+	cmd2 = check_cmd(arg2[0], envp);
 	if (!cmd1 || !cmd2)
 	{
 		printf("invalid command\n");
