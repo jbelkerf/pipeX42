@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.h                                           :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/03 21:20:39 by jbelkerf         ###   ########.fr       */
+/*   Created: 2024/10/21 16:07:49 by jbelkerf          #+#    #+#             */
+/*   Updated: 2024/11/04 13:29:31 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADER_H
-# define HEADER_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <errno.h>
-# include <string.h>
-# include <stdlib.h>
-# include <fcntl.h>
+/*
+ * the strchr look for the first ocu of c in s and return a pointer to that ocu
+ */
+char	*ft_strchr(const char *s, int c)
+{
+	char	*p;
 
-char	**ft_split2(char const *s, char c);
-char	*check_cmd(char *cmd, char **envp);
-#endif
+	p = (char *)s;
+	while (*p)
+	{
+		if (*p == (char)c)
+			return (p);
+		p++;
+	}
+	if ((char)c == 0)
+		return (p);
+	else
+		return (NULL);
+}

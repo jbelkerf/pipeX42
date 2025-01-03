@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/21 16:06:59 by jbelkerf          #+#    #+#             */
-/*   Updated: 2024/11/04 13:46:07 by jbelkerf         ###   ########.fr       */
+/*   Created: 2024/10/21 16:08:06 by jbelkerf          #+#    #+#             */
+/*   Updated: 2024/11/01 13:42:41 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "libft.h"
 
 /*
- * no need for documentation but this func count the lenght of a giving string
+ * this func print the string s to the file discreptor fd
  */
-size_t	ft_strlen(const char *str)
+void	ft_putstr_fd(char *s, int fd)
 {
-	size_t	i;
-
-	i = 0;
-	while (str[i])
+	if (s == NULL)
+		return ;
+	while (*s)
 	{
-		i++;
+		write(fd, s, 1);
+		s++;
 	}
-	return (i);
 }

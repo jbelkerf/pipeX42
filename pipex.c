@@ -6,11 +6,12 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:23:37 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/03 20:23:00 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/03 21:21:13 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+#include "./libft/libft.h"
 
 void	exec_cmd(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 {

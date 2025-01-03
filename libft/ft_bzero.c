@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.h                                           :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/03 21:20:39 by jbelkerf         ###   ########.fr       */
+/*   Created: 2024/10/21 15:58:33 by jbelkerf          #+#    #+#             */
+/*   Updated: 2024/11/04 12:41:24 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADER_H
-# define HEADER_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <errno.h>
-# include <string.h>
-# include <stdlib.h>
-# include <fcntl.h>
+/*
+ *the bzero func take a void pointer to an memeory and fail it with '\0' aka 0
+ *the char pointer p created because we cant change or asigne to
+ *									a void pointer nor derefrence
+ */
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+	char	*p;
 
-char	**ft_split2(char const *s, char c);
-char	*check_cmd(char *cmd, char **envp);
-#endif
+	p = (char *)s;
+	i = 0;
+	while (i < n)
+	{
+		p[i] = 0;
+		i++;
+	}
+}

@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.h                                           :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/03 21:20:39 by jbelkerf         ###   ########.fr       */
+/*   Created: 2024/10/21 15:59:21 by jbelkerf          #+#    #+#             */
+/*   Updated: 2024/10/25 17:58:12 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADER_H
-# define HEADER_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <errno.h>
-# include <string.h>
-# include <stdlib.h>
-# include <fcntl.h>
-
-char	**ft_split2(char const *s, char c);
-char	*check_cmd(char *cmd, char **envp);
-#endif
+/*
+ * this func check if the c corespand in ascii table is a alphabet char if
+ * true return 1 else return 0
+ */
+int	ft_isalpha(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	else
+		return (0);
+}

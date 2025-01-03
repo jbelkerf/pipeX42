@@ -6,11 +6,12 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/03 18:22:23 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/03 21:31:32 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+#include "./libft/libft.h"
 
 char	*check_cmd(char *cmd, char **envp)
 {

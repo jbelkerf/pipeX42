@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/21 16:07:26 by jbelkerf          #+#    #+#             */
-/*   Updated: 2024/11/01 13:20:14 by jbelkerf         ###   ########.fr       */
+/*   Created: 2024/10/21 15:58:43 by jbelkerf          #+#    #+#             */
+/*   Updated: 2024/11/04 12:45:05 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "libft.h"
 
 /*
- * the strjoin take two strings and make them in one string using ft_strlcpy
- * and ft_strcat
+ * the ft_calloc take number of memberes and the size of each member then it 
+ * allocate the total memory neeeded using malloc then it send the memory to
+ * the bzero func to set it to 0
  */
-char	*ft_strjoin(char const *s1, char const *s2)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char	*re;
+	void	*p;
+	size_t	t;
 
-	if (s1 == NULL || s2 == NULL)
+	t = nmemb * size;
+	if (!t)
+		return (malloc(0));
+	if (size != (t / nmemb))
 		return (NULL);
-	re = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (re == NULL)
+	p = (void *)malloc(nmemb * size);
+	if (p == NULL)
 		return (NULL);
-	ft_strlcpy(re, s1, ft_strlen(s1) + 1);
-	ft_strlcat(re, s2, ft_strlen(s1) + ft_strlen(s2) + 1);
-	return (re);
+	ft_bzero(p, nmemb * size);
+	return (p);
 }

@@ -1,25 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.h                                           :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/03 21:20:39 by jbelkerf         ###   ########.fr       */
+/*   Created: 2024/10/21 16:08:59 by jbelkerf          #+#    #+#             */
+/*   Updated: 2024/11/04 12:50:11 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADER_H
-# define HEADER_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <errno.h>
-# include <string.h>
-# include <stdlib.h>
-# include <fcntl.h>
+/*
+ * the memchr func look up the n byte of  memory pointed by s for the first
+ * match with the int c then it return a pinter to that match in s
+ */
+void	*ft_memchr(const void *s, int c, size_t n)
+{
+	unsigned char	*p;
+	size_t			i;
 
-char	**ft_split2(char const *s, char c);
-char	*check_cmd(char *cmd, char **envp);
-#endif
+	i = 0;
+	p = (unsigned char *)s;
+	while (i < n)
+	{
+		if (*p == (unsigned char)c)
+			return ((void *)p);
+		p++;
+		i++;
+	}
+	return (0);
+}

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "libft.h"
 
 /*
  * the strncmp compare n byte of two strings s1 and s2 if all the n byte equal

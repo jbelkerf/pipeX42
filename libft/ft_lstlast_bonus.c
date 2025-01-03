@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   header.h                                           :+:      :+:    :+:   */
+/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/03 21:20:39 by jbelkerf         ###   ########.fr       */
+/*   Created: 2024/10/21 16:08:31 by jbelkerf          #+#    #+#             */
+/*   Updated: 2024/11/01 13:36:15 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEADER_H
-# define HEADER_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <errno.h>
-# include <string.h>
-# include <stdlib.h>
-# include <fcntl.h>
-
-char	**ft_split2(char const *s, char c);
-char	*check_cmd(char *cmd, char **envp);
-#endif
+/*
+ * the lstlst take a string an iterite on it till it got the last node that will
+ * be returned
+ */
+t_list	*ft_lstlast(t_list *lst)
+{
+	while (lst)
+	{
+		if (lst->next == NULL)
+			return (lst);
+		lst = lst->next;
+	}
+	return (NULL);
+}

@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/21 16:07:09 by jbelkerf          #+#    #+#             */
-/*   Updated: 2024/11/02 11:15:08 by jbelkerf         ###   ########.fr       */
+/*   Created: 2024/10/21 16:07:35 by jbelkerf          #+#    #+#             */
+/*   Updated: 2024/11/04 13:33:50 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "libft.h"
 
 /*
- * the strlcpy copy from src to dest respecting a giving size and ensuring 
- * there is a place for a null terminator
+ * striteri take a strin s and a pointer to function f and using f to iterite 
+ * the string
  */
-size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
 	size_t	i;
+	size_t	lenght;
 
-	if (size == 0)
-		return (ft_strlen(src));
+	if (s == NULL || f == NULL)
+		return ;
 	i = 0;
-	while (i < size - 1 && src[i])
+	lenght = ft_strlen(s);
+	while (i < lenght && s[i])
 	{
-		dest[i] = src[i];
+		f(i, &s[i]);
 		i++;
 	}
-	dest[i] = 0;
-	return (ft_strlen(src));
 }

@@ -1,7 +1,9 @@
 NAME=pipex
 
 all:
-	gcc *.c -o pipex
+	$(MAKE) -C ./libft
+	$(MAKE) clean -C ./libft
+	gcc  *.c ./libft/libft.a -o pipex
 clean:
 	rm pipex
 fclean: $(clean)

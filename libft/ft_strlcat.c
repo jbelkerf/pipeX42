@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "libft.h"
 
 /*
  * the strlcat concatanat two strings in a giving size and ensure there's

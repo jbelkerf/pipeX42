@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/21 16:08:06 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/03 19:30:49 by jbelkerf         ###   ########.fr       */
+/*   Created: 2024/10/21 16:08:51 by jbelkerf          #+#    #+#             */
+/*   Updated: 2024/11/01 13:35:40 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "libft.h"
 
 /*
- * this func print the string s to the file discreptor fd
+ * the lstsize iterite on the giving list to calculate its size
  */
-void	ft_putstr_fd(char *s, int fd)
+int	ft_lstsize(t_list *lst)
 {
-	if (s == NULL)
-		return ;
-	while (*s)
+	int	i;
+
+	i = 0;
+	if (lst == NULL)
+		return (0);
+	while (lst)
 	{
-		write(fd, s, 1);
-		s++;
+		i++;
+		lst = lst->next;
 	}
+	return (i);
 }
