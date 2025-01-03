@@ -1,12 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_cmd.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
+/*   Updated: 2025/01/03 18:22:23 by jbelkerf         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "header.h"
 
-char *check_cmd(char *cmd, char **envp)
+char	*check_cmd(char *cmd, char **envp)
 {
-	char *path;
-	char **paths;
-	int i = 0;
-	int fd;
+	char	*path;
+	char	**paths;
+	int		i;
+	int		fd;
 
+	i = 0;
 	paths = ft_split(cmd, ' ');
 	cmd = paths[0];
 	while (envp[i])
