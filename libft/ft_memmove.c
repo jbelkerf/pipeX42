@@ -40,13 +40,11 @@ static void	*r_cpy(void *dest, const void *src, size_t n)
 {
 	unsigned char	*b;
 	unsigned char	*s;
-	size_t			i;
 
 	b = (unsigned char *)dest;
 	s = (unsigned char *)src;
 	if (n == 0)
 		return (dest);
-	i = 0;
 	while (n)
 	{
 		n--;
