@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:23:37 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/03 23:29:31 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/04 16:25:17 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc, char *argv[], char *envp[])
 		exec_child(argv, envp, pipefd, 1);
 	else if (pid > 0)
 	{
-		waitpid(pid, NULL, 0);
+		//waitpid(pid, NULL, 0);
 		exec_parent(argv, envp, pipefd, 2);
 	}
 	else
