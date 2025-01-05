@@ -41,6 +41,8 @@ void exec_middle(t_pipe *pip)
     close(pip->pipfd[pip->pip_write][0]);
     dup2(pip->pipfd[pip->pip_read][0], STDIN_FILENO);
     dup2(pip->pipfd[pip->pip_write][1], STDOUT_FILENO);
+    //close(pip->pipfd[pip->pip_read][0]);
+    //close(pip->pipfd[pip->pip_write][1]);
     execve(cmd, ft_split(pip->argv[pip->cmd_number + 1], ' '), pip->envp);
     error();
 }
@@ -59,8 +61,9 @@ void exec_child(t_pipe *pip)
 		if (fd == -1)
 			error();
 		dup2(fd, STDIN_FILENO);
-		//close(fd);
+		close(fd);
 		dup2(pip->pipfd[pip->pip_write][1], STDOUT_FILENO);
+        //close(pip->pipfd[pip->pip_write][1]);
 	execve(cmd, ft_split(pip->argv[pip->cmd_number + 1], ' '), pip->envp);
 	error();
 }
