@@ -11,7 +11,7 @@ void exec_parent(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 {
 	char	*cmd;
 	int		fd;
-
+    printf("\nparent dkhal cmd: %d\n", cmd_numb);
 	cmd = check_cmd(argv[cmd_numb + 1], envp);
 	
 	close(pipefd[1]);
@@ -28,7 +28,7 @@ void exec_parent(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 void exec_middle(t_pipe *pip)
 {
     char    *cmd;
-
+    printf("\nmiddle dkhal cmd: %d\n", pip->cmd_number);
     cmd = check_cmd(pip->argv[pip->cmd_number + 1], pip->envp);
     close(pip->pipfd[pip->pip_read][1]);
     close(pip->pipfd[pip->pip_write][0]);
@@ -42,6 +42,7 @@ void exec_child(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 {
 	char	*cmd;
 	int		fd;
+    printf("\nchilde dkhal cmd: %d\n", cmd_numb);
 	cmd = check_cmd(argv[cmd_numb + 1], envp);
 	
 		
@@ -58,31 +59,35 @@ void exec_child(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 
 void pipeit(t_pipe *pip)
 {
-   printf("%s\n",pip->argv[pip->cmd_number + 1]);
     int pid;
-    if (pip->cmd_number > 1)
+    int i = 1;
+
+    while (pip->cmd_number >= 1)
     {
-        pipe(pip->pipfd[pip->pip_write - 1]);
-        pip->pip_read = pip->pip_read - 1;
         pid = fork();
         if (pid == 0)
         {
-            pip->cmd_number = pip->cmd_number - 1;
-            pip->pip_write = pip->pip_read;
-            pipeit(pip);
+            if (i == 1)
+            {
+                exec_child(pip->argv, pip->envp, pip->pipfd[i - 1], i );
+            }
+            else if (i < pip->argc - 3)
+            {
+                pip->pip_read = i - 2;
+                pip->pip_write = i - 1;
+                pip->cmd_number = i;
+                exec_middle(pip);
+            }
+            else if (i == pip->argc - 3)
+            {
+                exec_parent(pip->argv, pip->envp, pip->pipfd[i - 1], i);
+            }
         }
         else if (pid > 0)
         {
-            waitpid(pid, NULL, 0);
-            exec_middle(pip);
+            pip->cmd_number--;
+            i++;
         }
-        else
-            error();
-    }
-    else if (pip->cmd_number == 1)
-    {
-        exec_child(pip->argv, pip->envp, pip->pipfd[pip->pip_write], pip->cmd_number);
-        error();
     }
 }
 
@@ -93,7 +98,7 @@ int main(int argc, char *argv[], char *envp[])
     int     **pipefd;
     int i = 0;
 
-    pipefd = malloc((argc - 3) * sizeof(int *));
+    pipefd = malloc((argc - 2) * sizeof(int *));
     while (i < argc - 3)
     {
         pipefd[i] = malloc(2 * sizeof(int));
@@ -105,19 +110,13 @@ int main(int argc, char *argv[], char *envp[])
     pip->argc = argc;
     pip->envp = envp;
     pip->cmd_number = argc - 3;
+    i = 0;
+    while (i < pip->cmd_number)
+    {
+        pipe(pip->pipfd[i]);
+        i++;
+    }
    // if (!ft_strncmp(argv[1], "here_doc", 8))
        // here_docit(argc, argv, envp);
-        pipe(pip->pipfd[pip->cmd_number - 2]);
-        pid = fork();
-        if (pid == 0)
-        {
-            pip->pip_write = pip->cmd_number - 2;
-            pip->cmd_number = pip->cmd_number - 1;
-            pipeit(pip);
-        }
-        else if (pid > 0)
-        {
-            waitpid(pid, NULL, 0);
-            exec_parent(pip->argv, pip->envp, pip->pipfd[pip->cmd_number - 2], pip->cmd_number);
-        }   
+       pipeit(pip);   
 }
