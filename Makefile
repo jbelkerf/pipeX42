@@ -1,6 +1,6 @@
 NAME = pipex
 M_SRC = ft_split2.c check_cmd.c pipex.c
-M_BON = ft_split2.c check_cmd.c pipex_bonus.c
+M_BON = ft_split2.c check_cmd.c pipex_bo.c
 all:
 	$(MAKE) -C ./libft
 	$(MAKE) clean -C ./libft
