@@ -21,8 +21,9 @@ void exec_parent(t_pipe *pip)
 	if (fd == -1)
 		error();
 	dup2(fd, STDOUT_FILENO);
-	//close(fd);
+	close(fd);
 	dup2(pip->pipfd[pip->pip_read][0], STDIN_FILENO);
+    close(pip->pipfd[pip->pip_read][0]);
 	execve(cmd, ft_split(pip->argv[pip->cmd_number + 1], ' '), pip->envp);
 	error();
 }
@@ -41,8 +42,8 @@ void exec_middle(t_pipe *pip)
     close(pip->pipfd[pip->pip_write][0]);
     dup2(pip->pipfd[pip->pip_read][0], STDIN_FILENO);
     dup2(pip->pipfd[pip->pip_write][1], STDOUT_FILENO);
-    //close(pip->pipfd[pip->pip_read][0]);
-    //close(pip->pipfd[pip->pip_write][1]);
+    close(pip->pipfd[pip->pip_read][0]);
+    close(pip->pipfd[pip->pip_write][1]);
     execve(cmd, ft_split(pip->argv[pip->cmd_number + 1], ' '), pip->envp);
     error();
 }
@@ -63,12 +64,12 @@ void exec_child(t_pipe *pip)
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 		dup2(pip->pipfd[pip->pip_write][1], STDOUT_FILENO);
-        //close(pip->pipfd[pip->pip_write][1]);
+        close(pip->pipfd[pip->pip_write][1]);
 	execve(cmd, ft_split(pip->argv[pip->cmd_number + 1], ' '), pip->envp);
 	error();
 }
 
-void pipeit(t_pipe *pip)
+int pipeit(t_pipe *pip)
 {
     int pid;
     int i = 1;
@@ -105,6 +106,7 @@ void pipeit(t_pipe *pip)
             i++;
         }
     }
+    return pid;
 }
 
 int main(int argc, char *argv[], char *envp[])
@@ -135,5 +137,7 @@ int main(int argc, char *argv[], char *envp[])
     }
    // if (!ft_strncmp(argv[1], "here_doc", 8))
        // here_docit(argc, argv, envp);
-       pipeit(pip);   
+       i = pipeit(pip);
+       //waitpid(i, &i, 0); 
+       exit(i);  
 }
