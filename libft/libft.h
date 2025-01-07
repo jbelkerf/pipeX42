@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 16:01:24 by jbelkerf          #+#    #+#             */
-/*   Updated: 2024/10/28 13:46:08 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/07 15:05:24 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,5 @@ int		ft_isalpha(int c);
 int		ft_isalnum(int c);
 int		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);
+int	ft_strcmp(const char *s1, const char *s2);
 #endif

@@ -1,4 +1,5 @@
 #include "./libft/libft.h"
+#include "./get_the_next_line/get_next_line.h"
 #include "header_bonus.h"
 
 typedef struct ap{
@@ -40,6 +41,34 @@ int exec_mid(t_pip *pip)
     else
         return 0;
 }
+void here_doc_it(t_pip *pip)
+{
+    int fd1;
+    int fd2;
+    char *str;
+    char c;
+
+    fd1 = open("read_in_file", O_WRONLY | O_TRUNC | O_CREAT , 0777);
+    fd2 = open("read_in_file", O_RDONLY  , 0777);
+    while (1)
+    {
+        read(0, &c, 1);
+        write(fd1, &c, 1);
+        if (c == '\n')
+        {
+            c = 0;
+            str = get_next_line(fd2);
+            str[ft_strlen(str) - 1] = 0;
+
+            if (!ft_strcmp(str, pip->argv[2]))
+            {
+                close(fd1);
+                return;
+                break;
+            }
+        }
+    }
+}
 
 int pip_it(t_pip *pip)
 {
@@ -60,7 +89,7 @@ int pip_it(t_pip *pip)
         dup2(pipfd[0], STDIN_FILENO);
         close(pipfd[1]);
         pip->cmd_numb++;
-        exec_mid(pip);
+        return (exec_mid(pip));
     }
 }
 int main(int argc, char **argv, char **envp)
@@ -73,9 +102,13 @@ int main(int argc, char **argv, char **envp)
     pip.argv = argv;
     pip.cmd_numb = 1;
     pip.envp = envp;
-    pip.infd = open(argv[1], O_RDONLY, 0777);
-    pip.outfd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0777);
-    pip_it(&pip);
-
+    if (!ft_strcmp(argv[1], "here_doc"))
+        here_doc_it(&pip);
+    else
+    {
+        pip.infd = open(argv[1], O_RDONLY, 0777);
+        pip.outfd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+        pip_it(&pip);
+    }
     return 0;
 }
