@@ -24,7 +24,6 @@ void exec_parent(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 	int		fd;
 
 	cmd = check_cmd(argv[cmd_numb + 1], envp);
-	
 	close(pipefd[1]);
 	fd = open(argv[4], O_TRUNC | O_WRONLY | O_CREAT, 0777);
 	if (fd == -1)
@@ -42,7 +41,6 @@ void exec_child(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 	int		fd;
 
 	cmd = check_cmd(argv[cmd_numb + 1], envp);
-	
 		close(pipefd[0]);
 		fd = open(argv[1], O_RDONLY, 0777);
 		if (fd == -1)
@@ -55,25 +53,26 @@ void exec_child(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 }
 int pipe_this(t_pipe *pip)
 {
-	int i;
 	int pid;
 	int pipefd[2];
+	int status;
 	
-	i = 1;
+	status = 1;
 	if (pipe(pipefd) == -1)
 		error();
 	pid = fork();
 	if (pid == 0)
-		exec_child(pip->argv, pip->envp, pipefd, i);
-	else if (pid < 0)
+		exec_child(pip->argv, pip->envp, pipefd, 1);
+	else if (pid == -1)
 		error();
 	pid = fork();
 	if (pid == 0)
-		exec_parent(pip->argv, pip->envp, pipefd, i);
-	else if (pid < 0)
-		error();
-	//waitpid(pid, &i, 0);
-	return (i);
+		exec_parent(pip->argv, pip->envp, pipefd, 2);
+	else if (pid == -1)
+
+		
+	//waitpid(pid, &status, 0);
+	return (status);
 }
 int	main(int argc, char *argv[], char *envp[])
 {
@@ -89,5 +88,5 @@ int	main(int argc, char *argv[], char *envp[])
 	pip.argv = argv;
 	pip.envp = envp;
 	i = pipe_this(&pip);
-	return (i);
+	return (WEXITSTATUS(i));
 }
