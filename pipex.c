@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:23:37 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/08 11:41:16 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/08 12:29:33 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void exec_parent(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 	if (fd == -1)
 		error();
 	dup2(fd, STDOUT_FILENO);
+	close(fd);
 	dup2(pipefd[0], STDIN_FILENO);
 	execve(cmd, ft_split(argv[cmd_numb + 1], ' '), envp);
 	error();
@@ -47,24 +48,46 @@ void exec_child(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 		if (fd == -1)
 			error();
 		dup2(fd, STDIN_FILENO);
+		close(fd);
 		dup2(pipefd[1], STDOUT_FILENO);
 	execve(cmd, ft_split(argv[cmd_numb + 1], ' '), envp);
 	error();
 }
-int	main(int argc, char *argv[], char *envp[])
+int pipe_this(t_pipe *pip)
 {
-	int	pid;
-	int	pipefd[2];
-
-	if (argc != 5)
-		exit(1);
+	int i;
+	int pid;
+	int pipefd[2];
+	
+	i = 1;
 	if (pipe(pipefd) == -1)
 		error();
 	pid = fork();
 	if (pid == 0)
-		exec_child(argv, envp, pipefd, 1);
-	else if (pid > 0)
-		exec_parent(argv, envp, pipefd, 2);
-	else
+		exec_child(pip->argv, pip->envp, pipefd, i);
+	else if (pid < 0)
 		error();
+	pid = fork();
+	if (pid == 0)
+		exec_parent(pip->argv, pip->envp, pipefd, i);
+	else if (pid < 0)
+		error();
+	//waitpid(pid, &i, 0);
+	return (i);
+}
+int	main(int argc, char *argv[], char *envp[])
+{
+	int	pid;
+	int i;
+	t_pipe pip;
+
+	if (argc != 5)
+	{
+		exit(1);
+	}
+	pip.argc = argc;
+	pip.argv = argv;
+	pip.envp = envp;
+	i = pipe_this(&pip);
+	return (i);
 }

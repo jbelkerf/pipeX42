@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/08 11:37:33 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/08 12:27:14 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,3 +46,30 @@ void print_prompt(void);
 int pip_it1(t_pip *pip);
 
 #endif
+
+// int	main(int argc, char *argv[], char *envp[])
+// {
+// 	int	pid;
+// 	int	pipefd[2];
+
+// 	if (argc != 5)
+// 	{
+// 		exit(1);
+// 	}
+// 	if (pipe(pipefd) == -1)
+// 	{
+// 		error();
+// 	}
+// 	pid = fork();
+// 	if (pid == 0)
+// 		exec_child(argv, envp, pipefd, 1);
+// 	else if (pid > 0)
+// 	{
+
+// 		exec_parent(argv, envp, pipefd, 2);
+// 	}
+// 	else
+// 	{
+// 		error();
+// 	}
+// }
