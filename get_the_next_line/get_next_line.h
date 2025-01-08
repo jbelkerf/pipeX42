@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 19:41:44 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/07 14:52:01 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/08 11:18:26 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 2
+#  define BUFFER_SIZE 1
 # endif
 
 char	*ft_strdup1(const char *s);

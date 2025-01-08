@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 16:09:20 by jbelkerf          #+#    #+#             */
-/*   Updated: 2024/11/04 13:15:24 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/08 11:49:47 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,11 @@ static void	*r_cpy(void *dest, const void *src, size_t n)
 {
 	unsigned char	*b;
 	unsigned char	*s;
-	size_t			i;
 
 	b = (unsigned char *)dest;
 	s = (unsigned char *)src;
 	if (n == 0)
 		return (dest);
-	i = 0;
 	while (n)
 	{
 		n--;

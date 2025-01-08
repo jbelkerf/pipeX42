@@ -1,143 +1,86 @@
-#include "header_bonus.h"
 #include "./libft/libft.h"
+#include "./get_the_next_line/get_next_line.h"
+#include "header.h"
 
-void error(void)
+
+int exec_mid(t_pip *pip)
 {
-	perror("Error");
-	exit(EXIT_FAILURE);
-}
-
-void exec_parent(t_pipe *pip)
-{
-	char	*cmd;
-	int		fd;
-    printf("\nparent dkhal cmd: %d\n", pip->cmd_number);
-    printf("pipe %d %d\n", pip->pipfd[pip->pip_read][0], pip->pipfd[pip->pip_read][1]);
-    write(1,"NN", 2);
-	cmd = check_cmd(pip->argv[pip->cmd_number + 1], pip->envp);
-	printf("%s\n", cmd);
-	close(pip->pipfd[pip->pip_read][1]);
-	fd = open(pip->argv[pip->argc - 1], O_TRUNC | O_WRONLY | O_CREAT, 0777);
-	if (fd == -1)
-		error();
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	dup2(pip->pipfd[pip->pip_read][0], STDIN_FILENO);
-    close(pip->pipfd[pip->pip_read][0]);
-	execve(cmd, ft_split(pip->argv[pip->cmd_number + 1], ' '), pip->envp);
-	error();
-}
-
-void exec_middle(t_pipe *pip)
-{
-    char    *cmd;
-
-    printf("\nmiddle dkhal cmd: %d\n", pip->cmd_number);
-    printf("pipe read %d %d\n", pip->pipfd[pip->pip_read][0], pip->pipfd[pip->pip_read][1]);
-    printf("pipe write %d %d\n", pip->pipfd[pip->pip_write][0], pip->pipfd[pip->pip_write][1]);
-    
-    cmd = check_cmd(pip->argv[pip->cmd_number + 1], pip->envp);
-    printf("%s\n", cmd);
-    close(pip->pipfd[pip->pip_read][1]);
-    close(pip->pipfd[pip->pip_write][0]);
-    dup2(pip->pipfd[pip->pip_read][0], STDIN_FILENO);
-    dup2(pip->pipfd[pip->pip_write][1], STDOUT_FILENO);
-    close(pip->pipfd[pip->pip_read][0]);
-    close(pip->pipfd[pip->pip_write][1]);
-    execve(cmd, ft_split(pip->argv[pip->cmd_number + 1], ' '), pip->envp);
-    error();
-}
-
-void exec_child(t_pipe *pip)
-{
-	char	*cmd;
-	int		fd;
-    printf("\nchilde dkhal cmd: %d\n", pip->cmd_number);
-    printf("pipe %d %d\n", pip->pipfd[pip->pip_write][0], pip->pipfd[pip->pip_write][1]);
-	cmd = check_cmd(pip->argv[pip->cmd_number + 1], pip->envp);
-	printf("%s\n", cmd);
-		
-        close(pip->pipfd[pip->pip_write][0]);
-		fd = open(pip->argv[1], O_RDONLY, 0777);
-		if (fd == -1)
-			error();
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-		dup2(pip->pipfd[pip->pip_write][1], STDOUT_FILENO);
-        close(pip->pipfd[pip->pip_write][1]);
-	execve(cmd, ft_split(pip->argv[pip->cmd_number + 1], ' '), pip->envp);
-	error();
-}
-
-int pipeit(t_pipe *pip)
-{
+    int i = 0;
     int pid;
-    int i = 1;
+    int pipfd[2];
 
-    while (pip->cmd_number > 0)
+    while (pip->cmd_numb < pip->argc - 3)
     {
-        //printf("%d -> %d\n", pip->cmd_number, i);
+        pipe(pipfd);
         pid = fork();
         if (pid == 0)
         {
-            if (i == 1)
-            {
-                pip->cmd_number = i;
-                exec_child(pip);
-            }
-            else if (i < pip->argc - 3)
-            {
-                pip->pip_read = i - 2;
-                pip->pip_write = i - 1;
-                pip->cmd_number = i;
-                exec_middle(pip);
-            }
-            else if (i == pip->argc - 3)
-            {
-                pip->cmd_number = i;
-                pip->pip_read = i - 2;
-                exec_parent(pip);
-            }
+            dup2(pipfd[1], STDOUT_FILENO);
+            close(pipfd[0]);
+            execve(check_cmd(pip->argv[pip->cmd_numb + 1], pip->envp), ft_split(pip->argv[pip->cmd_numb + 1], ' '), pip->envp);
         }
         else if (pid > 0)
         {
-           //waitpid(pid, NULL, 0);
-            pip->cmd_number--;
-            i++;
+            dup2(pipfd[0], STDIN_FILENO);
+            close(pipfd[1]);
+            pip->cmd_numb++;
         }
     }
-    return pid;
+    dup2(pip->outfd, STDOUT_FILENO);
+    pid = fork();
+    if (pid == 0)
+        execve(check_cmd(pip->argv[pip->cmd_numb + 1], pip->envp), ft_split(pip->argv[pip->cmd_numb + 1], ' '), pip->envp);
+    else
+        return 0;
 }
 
-int main(int argc, char *argv[], char *envp[])
-{
-    int pid;
-    t_pipe  *pip;
-    int     **pipefd;
-    int i = 0;
 
-    pipefd = malloc((argc - 2) * sizeof(int *));
-    while (i < argc - 3)
+
+int pip_it(t_pip *pip)
+{
+    int pipfd[2];
+    int pid;
+
+    dup2(pip->infd, STDIN_FILENO);
+    pipe(pipfd);
+    dup2(pipfd[1], STDOUT_FILENO);
+    pid = fork();
+    if (pid == 0)
     {
-        pipefd[i] = malloc(2 * sizeof(int));
-        i++;
+        close(pipfd[0]);
+        execve(check_cmd(pip->argv[2], pip->envp), ft_split(pip->argv[2], ' '), pip->envp);
     }
-    pip = malloc(sizeof(t_pipe));
-    pip->pipfd = pipefd;
-    pip->argv = argv;
-    pip->argc = argc;
-    pip->envp = envp;
-    pip->cmd_number = argc - 3;
-    i = 0;
-    while (i < pip->cmd_number)
+    else if (pid > 0)
     {
-        pipe(pip->pipfd[i]);
-        printf("pipe-%d: %d %d\n", i, pip->pipfd[i][0], pip->pipfd[i][1]);
-        i++;
+        dup2(pipfd[0], STDIN_FILENO);
+        close(pipfd[1]);
+        pip->cmd_numb++;
+        return (exec_mid(pip));
     }
-   // if (!ft_strncmp(argv[1], "here_doc", 8))
-       // here_docit(argc, argv, envp);
-       i = pipeit(pip);
-       //waitpid(i, &i, 0); 
-       exit(i);  
+}
+
+
+int main(int argc, char **argv, char **envp)
+{
+    int infd;
+    int outfd;
+    t_pip pip;
+    int i;
+
+    pip.argc = argc;
+    pip.argv = argv;
+    pip.cmd_numb = 1;
+    pip.envp = envp;
+    pip.outfd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+    if (!ft_strcmp(argv[1], "here_doc"))
+    {
+        here_doc_it(&pip);
+        i = pip_it1(&pip);
+    }
+    else
+    {
+        pip.infd = open(argv[1], O_RDONLY, 0777);
+        i = pip_it(&pip);
+    }
+    return i;
 }
