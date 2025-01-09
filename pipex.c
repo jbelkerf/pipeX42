@@ -6,18 +6,12 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:23:37 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/08 12:29:33 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/09 17:51:35 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 #include "./libft/libft.h"
-
-void	error(void)
-{
-	perror("Error");
-	exit(EXIT_FAILURE);
-}
 
 void	exec_parent(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 {
@@ -77,7 +71,6 @@ int	pipe_this(t_pipe *pip)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	int		pid;
 	int		i;
 	t_pipe	pip;
 
