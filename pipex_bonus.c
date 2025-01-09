@@ -84,6 +84,7 @@ int main(int argc, char **argv, char **envp)
         pip.cmd_total = argc - 4;
         pip.cmd_start = 2;
         i = pip_it(&pip);
+        unlink("read_in_line");
     }
     else
     {
