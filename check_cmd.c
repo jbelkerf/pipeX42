@@ -13,6 +13,23 @@
 #include "header.h"
 #include "./libft/libft.h"
 
+char **extract_pathvariable(char **envp)
+{
+	char *path_var;
+	char **paths;
+	int i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (!ft_strncmp("PATH", envp[i], 4))
+			path_var = envp[i];
+		i++;
+	}
+	path_var = path_var +5;
+	paths = ft_split2(path_var, ':');
+	return (paths);
+}
 char	*check_cmd(char *cmd, char **envp)
 {
 	char	*path;
@@ -23,15 +40,7 @@ char	*check_cmd(char *cmd, char **envp)
 	i = 0;
 	paths = ft_split(cmd, ' ');
 	cmd = paths[0];
-	while (envp[i])
-	{
-		if (!ft_strncmp("PATH", envp[i], 4))
-			path = envp[i];
-		i++;
-	}
-	path = path +5;
-	i = 0;
-	paths = ft_split2(path, ':');
+	paths = extract_pathvariable(envp);
 	while (paths[i])
 	{
 		paths[i] = ft_strjoin(paths[i], cmd);

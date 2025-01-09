@@ -71,7 +71,7 @@ int pipe_this(t_pipe *pip)
 	else if (pid == -1)
 
 		
-	//waitpid(pid, &status, 0);
+	waitpid(pid, &status, 0);
 	return (status);
 }
 int	main(int argc, char *argv[], char *envp[])

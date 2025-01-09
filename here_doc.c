@@ -7,35 +7,6 @@ void print_prompt(void)
     write(1, "pipe here_doc> ", 15);
 }
 
-int pip_it1(t_pip *pip)
-{
-    int pipfd[2];
-    int fd1;
-    int fd2;
-    int pid;
-
-    fd1 = open("read_in_line", O_RDONLY, 0777);
-    fd2 = open(pip->argv[5], O_WRONLY | O_APPEND | O_CREAT, 0777);
-    pipe(pipfd);
-    pid = fork();
-    if (pid == 0)
-    {
-        dup2(pipfd[1], STDOUT_FILENO);
-        dup2(fd1, STDIN_FILENO);
-        close(pipfd[0]);
-        close(pipfd[1]);
-        execve(check_cmd(pip->argv[3], pip->envp), ft_split(pip->argv[3], ' '), pip->envp);
-    }
-    else if (pid > 0)
-    {
-        unlink("read_in_line");
-        dup2(pipfd[0], STDIN_FILENO);
-        dup2(fd2, STDOUT_FILENO);
-        close(pipfd[1]);
-        close(pipfd[0]);
-        execve(check_cmd(pip->argv[4], pip->envp), ft_split(pip->argv[4], ' '), pip->envp);
-    }
-}
 
 void clear_delemeter(t_pip *pip)
 {

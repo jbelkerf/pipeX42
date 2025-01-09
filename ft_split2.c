@@ -67,8 +67,7 @@ static char	**fill_tab(char **re, char *ss, char c, int w_c)
 			ss++;
 		i++;
 	}
-	re[i] = 0;
-	return (re);
+	return (re[i] = 0, re);
 }
 
 static int	c_w(char *ss, char c)
