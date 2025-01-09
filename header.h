@@ -36,6 +36,8 @@ typedef struct ap{
     char **argv;
     char **envp;
     int cmd_numb;
+    int cmd_total;
+    int cmd_start;
 }   t_pip;
 
 char	**ft_split2(char const *s, char c);
@@ -46,30 +48,3 @@ void print_prompt(void);
 int pip_it1(t_pip *pip);
 
 #endif
-
-// int	main(int argc, char *argv[], char *envp[])
-// {
-// 	int	pid;
-// 	int	pipefd[2];
-
-// 	if (argc != 5)
-// 	{
-// 		exit(1);
-// 	}
-// 	if (pipe(pipefd) == -1)
-// 	{
-// 		error();
-// 	}
-// 	pid = fork();
-// 	if (pid == 0)
-// 		exec_child(argv, envp, pipefd, 1);
-// 	else if (pid > 0)
-// 	{
-
-// 		exec_parent(argv, envp, pipefd, 2);
-// 	}
-// 	else
-// 	{
-// 		error();
-// 	}
-// }
