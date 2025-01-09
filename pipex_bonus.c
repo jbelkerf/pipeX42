@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/09 18:14:15 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/09 19:17:19 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,16 @@ int	main(int argc, char **argv, char **envp)
 	{
 		here_doc_it(&pip);
 		pip.infd = open("read_in_line", O_RDONLY, 0777);
-		pip.cmd_total = argc - 4;
 		pip.cmd_start = 2;
 	}
 	else
 	{
-		pip.cmd_total = argc - 3;
 		pip.infd = open(argv[1], O_RDONLY, 0777);
 		pip.cmd_start = 1;
 	}
+	pip.cmd_total = argc - 2 - pip.cmd_start;
+	if (pip.infd == -1 || pip.outfd == -1)
+		error();
 	i = pip_it(&pip);
 	return (unlink("read_in_line"), WEXITSTATUS(i));
 }
