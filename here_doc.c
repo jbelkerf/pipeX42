@@ -6,12 +6,10 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 14:45:57 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/09 17:51:20 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/09 18:14:41 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libft/libft.h"
-#include "./get_the_next_line/get_next_line.h"
 #include "header.h"
 
 void	print_prompt(void)

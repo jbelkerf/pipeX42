@@ -6,12 +6,11 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:23:37 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/09 17:51:35 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/09 18:31:40 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-#include "./libft/libft.h"
 
 void	exec_parent(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 {
@@ -75,9 +74,7 @@ int	main(int argc, char *argv[], char *envp[])
 	t_pipe	pip;
 
 	if (argc != 5)
-	{
-		exit(1);
-	}
+		exit(EXIT_FAILURE);
 	pip.argc = argc;
 	pip.argv = argv;
 	pip.envp = envp;

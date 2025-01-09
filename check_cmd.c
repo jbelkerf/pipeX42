@@ -6,12 +6,11 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/09 17:46:01 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/09 18:14:52 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-#include "./libft/libft.h"
 
 void	error(void)
 {
