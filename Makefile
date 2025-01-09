@@ -6,7 +6,7 @@
 #    By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 11:57:31 by jbelkerf          #+#    #+#              #
-#    Updated: 2025/01/09 18:29:49 by jbelkerf         ###   ########.fr        #
+#    Updated: 2025/01/09 18:32:54 by jbelkerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ bonus: $(B_OBJ)
 	
 clean:
 	$(MAKE) clean -C ./libft 
-	rm $(M_OBJ) $(B_OBJ)
+	@$(rm $(M_OBJ) $(B_OBJ))
 fclean: clean
 	make fclean -C ./libft
 	rm $(NAME)
