@@ -61,7 +61,7 @@ char	*check_cmd(char *cmd, char **envp)
 	paths = ft_split(cmd, ' ');
 	pcmd = ft_strdup(paths[0]);
 	cmd = pcmd;
-	free(paths);
+	free_array(paths);
 	paths = extract_pathvariable(envp);
 	while (paths[i])
 	{
