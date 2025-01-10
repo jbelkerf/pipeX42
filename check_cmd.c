@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 11:02:03 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 11:10:28 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	error(char *str)
 {
-	perror("Error");
+	perror("JBash");
 	ft_putendl_fd(str, 2);
 	exit(EXIT_FAILURE);
 }

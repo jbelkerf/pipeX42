@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:23:37 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 10:56:47 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 11:37:11 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ void	pipe_this(t_pipe *pip)
 {
 	int	pid;
 	int	pipefd[2];
-	int	status;
 
-	status = 1;
 	if (pipe(pipefd) == -1)
 		error("pipe");
 	pid = fork();

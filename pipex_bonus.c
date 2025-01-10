@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 10:59:00 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 11:39:41 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	pip_it(t_pip *pip)
 		cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
 		argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
 		execve(cmd, argv, pip->envp);
+		error(cmd);
 	}
 	else if (pid > 0)
 	{
