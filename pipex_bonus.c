@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 11:39:41 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:13:30 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	pip_it(t_pip *pip)
 	char	*cmd;
 
 	dup2(pip->infd, STDIN_FILENO);
+	close(pip->infd);
 	pipe(pipfd);
 	dup2(pipfd[1], STDOUT_FILENO);
 	pid = fork();
@@ -84,6 +85,7 @@ void	pip_it(t_pip *pip)
 	else if (pid > 0)
 	{
 		dup2(pipfd[0], STDIN_FILENO);
+		close(pipfd[0]);
 		close(pipfd[1]);
 		pip->cmd_numb++;
 		exec_mid(pip);
@@ -119,6 +121,8 @@ int	main(int argc, char **argv, char **envp)
 	if (pip.infd == -1 || pip.outfd == -1)
 		error(argv[1]);
 	pip_it(&pip);
+	close(pip.infd);
+	close(pip.outfd);
 	while (waitpid(-1, &i, 0) > 0);
 	return (unlink("read_in_line"), WEXITSTATUS(i));
 }
