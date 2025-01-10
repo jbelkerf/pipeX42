@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 10:55:27 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 12:57:25 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,6 @@
 # include <stdio.h>
 # include "./libft/libft.h"
 # include "./get_the_next_line/get_next_line.h"
-
-typedef struct a_pipe{
-	char	**argv;
-	int		argc;
-	char	**envp;
-	int		cmd_number;
-	int		**pipfd;
-	int		pip_read;
-	int		pip_write;
-}	t_pipe;
 
 typedef struct ap{
 	int		infd;

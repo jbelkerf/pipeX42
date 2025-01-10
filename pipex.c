@@ -5,77 +5,80 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/03 18:23:37 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 11:37:11 by jbelkerf         ###   ########.fr       */
+/*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
+/*   Updated: 2025/01/10 13:06:55 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	exec_parent(char *argv[], char *envp[], int *pipefd, int cmd_numb)
+void	do_thing(t_pip *pip)
 {
+	char	**argv;
 	char	*cmd;
-	int		fd;
 
-	cmd = check_cmd(argv[cmd_numb + 1], envp);
-	close(pipefd[1]);
-	fd = open(argv[4], O_TRUNC | O_WRONLY | O_CREAT, 0777);
-	if (fd == -1)
-		error(argv[4]);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	dup2(pipefd[0], STDIN_FILENO);
-	execve(cmd, ft_split(argv[cmd_numb + 1], ' '), envp);
-	error(cmd);
+	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
+	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
+	
+		execve(cmd, argv, pip->envp);
+		error(cmd);
 }
 
-void	exec_child(char *argv[], char *envp[], int *pipefd, int cmd_numb)
-{
-	char	*cmd;
-	int		fd;
-
-	cmd = check_cmd(argv[cmd_numb + 1], envp);
-	close(pipefd[0]);
-	fd = open(argv[1], O_RDONLY, 0777);
-	if (fd == -1)
-		error(argv[1]);
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-	dup2(pipefd[1], STDOUT_FILENO);
-	execve(cmd, ft_split(argv[cmd_numb + 1], ' '), envp);
-	error(cmd);
-}
-
-void	pipe_this(t_pipe *pip)
+void	exec_mid(t_pip *pip)
 {
 	int	pid;
-	int	pipefd[2];
 
-	if (pipe(pipefd) == -1)
-		error("pipe");
+	dup2(pip->outfd, STDOUT_FILENO);
 	pid = fork();
 	if (pid == 0)
-		exec_child(pip->argv, pip->envp, pipefd, 1);
-	else if (pid == -1)
-		error("fork");
-	pid = fork();
-	if (pid == 0)
-		exec_parent(pip->argv, pip->envp, pipefd, 2);
+		do_thing(pip);
 	else if (pid == -1)
 		error("fork");
 }
 
-int	main(int argc, char *argv[], char *envp[])
+void	pip_it(t_pip *pip)
 {
-	int		i;
-	t_pipe	pip;
+	int		pipfd[2];
+	int		pid;
 
-	if (argc != 5)
-		exit(EXIT_FAILURE);
+	dup2(pip->infd, STDIN_FILENO);
+	pipe(pipfd);
+	dup2(pipfd[1], STDOUT_FILENO);
+	pid = fork();
+	if (pid == 0)
+	{
+		close(pipfd[0]);
+		do_thing(pip);
+	}
+	else if (pid > 0)
+	{
+		dup2(pipfd[0], STDIN_FILENO);
+		close(pipfd[1]);
+		pip->cmd_numb++;
+		exec_mid(pip);
+	}
+	else if (pid == -1)
+		error("fork");
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_pip	pip;
+	int		i;
+
 	pip.argc = argc;
 	pip.argv = argv;
+	pip.cmd_numb = 1;
 	pip.envp = envp;
-	pipe_this(&pip);
+	if (argc != 5)
+		return (1);
+	pip.outfd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	pip.infd = open(argv[1], O_RDONLY, 0777);
+	pip.cmd_start = 1;
+	pip.cmd_total = 2;
+	if (pip.infd == -1 || pip.outfd == -1)
+		error(argv[1]);
+	pip_it(&pip);
 	while (waitpid(-1, &i, 0) > 0);
-	return (WEXITSTATUS(i));
+	return (unlink("read_in_line"), WEXITSTATUS(i));
 }
