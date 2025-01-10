@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 13:06:55 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 15:37:44 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ void	exec_mid(t_pip *pip)
 {
 	int	pid;
 
+	pip->outfd = open(pip->argv[pip->argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	if (pip->outfd == -1)
+		error(pip->argv[pip->argc - 1]);
 	dup2(pip->outfd, STDOUT_FILENO);
+	close(pip->outfd);
 	pid = fork();
 	if (pid == 0)
 		do_thing(pip);
@@ -44,6 +48,7 @@ void	pip_it(t_pip *pip)
 	dup2(pip->infd, STDIN_FILENO);
 	pipe(pipfd);
 	dup2(pipfd[1], STDOUT_FILENO);
+	close(pipfd[1]);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -53,7 +58,7 @@ void	pip_it(t_pip *pip)
 	else if (pid > 0)
 	{
 		dup2(pipfd[0], STDIN_FILENO);
-		close(pipfd[1]);
+		close(pipfd[0]);
 		pip->cmd_numb++;
 		exec_mid(pip);
 	}
@@ -72,13 +77,13 @@ int	main(int argc, char **argv, char **envp)
 	pip.envp = envp;
 	if (argc != 5)
 		return (1);
-	pip.outfd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0777);
 	pip.infd = open(argv[1], O_RDONLY, 0777);
 	pip.cmd_start = 1;
 	pip.cmd_total = 2;
-	if (pip.infd == -1 || pip.outfd == -1)
+	if (pip.infd == -1)
 		error(argv[1]);
 	pip_it(&pip);
 	while (waitpid(-1, &i, 0) > 0);
+	close(pip.infd);
 	return (unlink("read_in_line"), WEXITSTATUS(i));
 }
