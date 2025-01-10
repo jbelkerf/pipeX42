@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 11:10:28 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 20:35:37 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,18 @@ void	error(char *str)
 	perror("JBash");
 	ft_putendl_fd(str, 2);
 	exit(EXIT_FAILURE);
+}
+
+void	free_array(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		free(str[i]);
+		i++;
+	}
 }
 
 char	**extract_pathvariable(char **envp)
@@ -43,15 +55,19 @@ char	*check_cmd(char *cmd, char **envp)
 	int		i;
 	int		fd;
 	char	*pcmd;
+	char	*tmp;
 
 	i = 0;
 	paths = ft_split(cmd, ' ');
-	pcmd = paths[0];
-	cmd = paths[0];
+	pcmd = ft_strdup(paths[0]);
+	cmd = pcmd;
+	free(paths);
 	paths = extract_pathvariable(envp);
 	while (paths[i])
 	{
+		tmp = paths[i];
 		paths[i] = ft_strjoin(paths[i], cmd);
+		free(tmp);
 		fd = access(paths[i], X_OK);
 		if (fd != -1)
 			return (paths[i]);
