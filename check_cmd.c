@@ -6,15 +6,16 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/09 18:14:52 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 11:02:03 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	error(void)
+void	error(char *str)
 {
 	perror("Error");
+	ft_putendl_fd(str, 2);
 	exit(EXIT_FAILURE);
 }
 
@@ -41,9 +42,11 @@ char	*check_cmd(char *cmd, char **envp)
 	char	**paths;
 	int		i;
 	int		fd;
+	char	*pcmd;
 
 	i = 0;
 	paths = ft_split(cmd, ' ');
+	pcmd = paths[0];
 	cmd = paths[0];
 	paths = extract_pathvariable(envp);
 	while (paths[i])
@@ -54,5 +57,5 @@ char	*check_cmd(char *cmd, char **envp)
 			return (paths[i]);
 		i++;
 	}
-	return ("mabghash");
+	return (pcmd);
 }

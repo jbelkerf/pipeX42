@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/09 19:17:19 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 10:59:00 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,24 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 		dup2(pipfd[1], STDOUT_FILENO);
 		close(pipfd[0]);
 		execve(cmd, argv, pip->envp);
+		error(cmd);
 	}
 	else if (option == 2)
 	{
 		execve(cmd, argv, pip->envp);
+		error(cmd);
 	}
 }
 
-int	exec_mid(t_pip *pip)
+void	exec_mid(t_pip *pip)
 {
-	int	i;
 	int	pid;
 	int	pipfd[2];
 
 	while (pip->cmd_numb < pip->cmd_total)
 	{
-		pipe(pipfd);
+		if (pipe(pipfd) == -1)
+			error("pipe");
 		pid = fork();
 		if (pid == 0)
 			do_thing(pip, pipfd, 1);
@@ -49,17 +51,18 @@ int	exec_mid(t_pip *pip)
 			close(pipfd[1]);
 			pip->cmd_numb++;
 		}
+		else if (pid < 0)
+			error("fork");
 	}
 	dup2(pip->outfd, STDOUT_FILENO);
 	pid = fork();
 	if (pid == 0)
 		do_thing(pip, pipfd, 2);
-	else if (pid > 0)
-		return (waitpid(pid, &i, 0), i);
-	return (error(), 1);
+	else if (pid == -1)
+		error("fork");
 }
 
-int	pip_it(t_pip *pip)
+void	pip_it(t_pip *pip)
 {
 	int		pipfd[2];
 	int		pid;
@@ -82,9 +85,10 @@ int	pip_it(t_pip *pip)
 		dup2(pipfd[0], STDIN_FILENO);
 		close(pipfd[1]);
 		pip->cmd_numb++;
-		return (exec_mid(pip));
+		exec_mid(pip);
 	}
-	return (error(), 1);
+	else if (pid == -1)
+		error("fork");
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -112,7 +116,8 @@ int	main(int argc, char **argv, char **envp)
 	}
 	pip.cmd_total = argc - 2 - pip.cmd_start;
 	if (pip.infd == -1 || pip.outfd == -1)
-		error();
-	i = pip_it(&pip);
+		error(argv[1]);
+	pip_it(&pip);
+	while (waitpid(-1, &i, 0) > 0);
 	return (unlink("read_in_line"), WEXITSTATUS(i));
 }

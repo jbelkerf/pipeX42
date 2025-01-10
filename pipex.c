@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:23:37 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/09 18:31:40 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 10:56:47 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void	exec_parent(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 	close(pipefd[1]);
 	fd = open(argv[4], O_TRUNC | O_WRONLY | O_CREAT, 0777);
 	if (fd == -1)
-		error();
+		error(argv[4]);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	dup2(pipefd[0], STDIN_FILENO);
 	execve(cmd, ft_split(argv[cmd_numb + 1], ' '), envp);
-	error();
+	error(cmd);
 }
 
 void	exec_child(char *argv[], char *envp[], int *pipefd, int cmd_numb)
@@ -38,15 +38,15 @@ void	exec_child(char *argv[], char *envp[], int *pipefd, int cmd_numb)
 	close(pipefd[0]);
 	fd = open(argv[1], O_RDONLY, 0777);
 	if (fd == -1)
-		error();
+		error(argv[1]);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	dup2(pipefd[1], STDOUT_FILENO);
 	execve(cmd, ft_split(argv[cmd_numb + 1], ' '), envp);
-	error();
+	error(cmd);
 }
 
-int	pipe_this(t_pipe *pip)
+void	pipe_this(t_pipe *pip)
 {
 	int	pid;
 	int	pipefd[2];
@@ -54,18 +54,17 @@ int	pipe_this(t_pipe *pip)
 
 	status = 1;
 	if (pipe(pipefd) == -1)
-		error();
+		error("pipe");
 	pid = fork();
 	if (pid == 0)
 		exec_child(pip->argv, pip->envp, pipefd, 1);
 	else if (pid == -1)
-		error();
+		error("fork");
 	pid = fork();
 	if (pid == 0)
 		exec_parent(pip->argv, pip->envp, pipefd, 2);
 	else if (pid == -1)
-		waitpid(pid, &status, 0);
-	return (status);
+		error("fork");
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -78,6 +77,7 @@ int	main(int argc, char *argv[], char *envp[])
 	pip.argc = argc;
 	pip.argv = argv;
 	pip.envp = envp;
-	i = pipe_this(&pip);
+	pipe_this(&pip);
+	while (waitpid(-1, &i, 0) > 0);
 	return (WEXITSTATUS(i));
 }

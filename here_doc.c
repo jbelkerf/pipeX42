@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 14:45:57 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/09 18:14:41 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 11:00:24 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	here_doc_it(t_pip *pip)
 
 	fd1 = open("read_line", O_WRONLY | O_TRUNC | O_CREAT, 0777);
 	fd2 = open("read_line", O_RDONLY, 0777);
+	if (fd1 == -1 || fd2 == -1)
+		error("read_line");
 	print_prompt();
 	do_the_read(pip, fd1, fd2);
 	clear_delemeter(pip);

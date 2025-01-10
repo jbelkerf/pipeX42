@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/09 18:18:16 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/10 10:55:27 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ char	*check_cmd(char *cmd, char **envp);
 void	here_doc_it(t_pip *pip);
 void	clear_delemeter(t_pip *pip);
 void	print_prompt(void);
-void	error(void);
+void	error(char *str);
 
 #endif
