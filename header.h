@@ -13,6 +13,7 @@
 #ifndef HEADER_H
 # define HEADER_H
 
+#include <sys/wait.h>
 # include <unistd.h>
 # include <errno.h>
 # include <stdlib.h>
