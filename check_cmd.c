@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 20:35:37 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 12:54:51 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ void	error(char *str)
 {
 	perror("JBash");
 	ft_putendl_fd(str, 2);
+	exit(EXIT_FAILURE);
+}
+
+void	command_not_found(char *cmd)
+{
+	ft_putstr_fd("JBash: command not found: ", 2);
+	ft_putendl_fd(cmd, 2);
 	exit(EXIT_FAILURE);
 }
 
@@ -73,5 +80,5 @@ char	*check_cmd(char *cmd, char **envp)
 			return (paths[i]);
 		i++;
 	}
-	return (pcmd);
+	return (command_not_found(pcmd), NULL);
 }

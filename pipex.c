@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 15:37:44 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 12:55:40 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@ void	do_thing(t_pip *pip)
 
 	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
-	
-		execve(cmd, argv, pip->envp);
-		error(cmd);
+	execve(cmd, argv, pip->envp);
+	error(cmd);
 }
 
 void	exec_mid(t_pip *pip)
 {
-	int	pid;
+	int		pid;
+	char	*path;
 
-	pip->outfd = open(pip->argv[pip->argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	path = pip->argv[pip->argc - 1];
+	pip->outfd = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0777);
 	if (pip->outfd == -1)
 		error(pip->argv[pip->argc - 1]);
 	dup2(pip->outfd, STDOUT_FILENO);
@@ -85,5 +86,5 @@ int	main(int argc, char **argv, char **envp)
 	pip_it(&pip);
 	while (waitpid(-1, &i, 0) > 0);
 	close(pip.infd);
-	return (unlink("read_in_line"), WEXITSTATUS(i));
+	return (WEXITSTATUS(i));
 }
