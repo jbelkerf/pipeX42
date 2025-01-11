@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:58:48 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 18:15:40 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 15:18:59 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*free_p(char **p)
 }
 
 int	ft_strlen1(const char *str)
-{ 
+{
 	int	i;
 
 	i = 0;

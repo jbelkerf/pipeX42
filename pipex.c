@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 15:10:17 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:32:25 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ int	exec_mid(t_pip *pip)
 	pip->outfd = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0777);
 	if (pip->outfd == -1)
 		error(pip->argv[pip->argc - 1]);
-	dup2(pip->outfd, STDOUT_FILENO);
-	close(pip->outfd);
+	dup_3(pip->outfd, STDOUT_FILENO);
 	pid = fork();
 	if (pid == 0)
 		do_thing(pip);
@@ -52,10 +51,9 @@ int	pip_it(t_pip *pip)
 	int		i;
 
 	i = 0;
-	dup2(pip->infd, STDIN_FILENO);
-	pipe(pipfd);
-	dup2(pipfd[1], STDOUT_FILENO);
-	close(pipfd[1]);
+	dup_3(pip->infd, STDIN_FILENO);
+	pipe_2(pipfd);
+	dup_3(pipfd[1], STDOUT_FILENO);
 	pid = fork();
 	if (pid == 0)
 	{
@@ -64,8 +62,7 @@ int	pip_it(t_pip *pip)
 	}
 	else if (pid > 0)
 	{
-		dup2(pipfd[0], STDIN_FILENO);
-		close(pipfd[0]);
+		dup_3(pipfd[0], STDIN_FILENO);
 		pip->cmd_numb++;
 		i = exec_mid(pip);
 	}
@@ -79,14 +76,10 @@ int	main(int argc, char **argv, char **envp)
 	t_pip	pip;
 	int		i;
 
-	pip.argc = argc;
-	pip.argv = argv;
-	pip.cmd_numb = 1;
-	pip.envp = envp;
+	set_1(&pip, argc, argv, envp);
 	if (argc != 5)
 		return (1);
-	pip.infd = open(argv[1], O_RDONLY, 0777);
-	pip.cmd_start = 1;
+	set_2(&pip, argv[1], 1);
 	pip.cmd_total = 2;
 	if (pip.infd == -1)
 		error(argv[1]);
@@ -95,6 +88,6 @@ int	main(int argc, char **argv, char **envp)
 		;
 	while (wait(NULL) > 0)
 		;
-	close(pip.infd);
+	close_final();
 	return (WEXITSTATUS(i));
 }

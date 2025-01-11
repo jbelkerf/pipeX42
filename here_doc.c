@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 14:45:57 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/10 11:00:24 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:52:06 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	clear_delemeter(t_pip *pip)
 		else
 			break ;
 	}
+	close_2(fd1, fd2);
 	unlink("read_line");
 }
 
@@ -58,12 +59,16 @@ void	do_the_read(t_pip *pip, int fd1, int fd2)
 		{
 			c = 0;
 			str = get_next_line(fd2);
+			if (str == NULL)
+				break ;
 			str[ft_strlen(str) - 1] = 0;
 			if (!ft_strcmp(str, pip->argv[2]))
 			{
-				close(fd1);
+				free(str);
+				close_2(fd1, fd2);
 				break ;
 			}
+			free(str);
 			print_prompt();
 		}
 	}

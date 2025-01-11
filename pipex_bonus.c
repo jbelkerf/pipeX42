@@ -6,11 +6,18 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 15:15:18 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:55:37 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+void	eterate_it(int *pipfd, t_pip *pip)
+{
+	dup_3(pipfd[0], STDIN_FILENO);
+	close(pipfd[1]);
+	pip->cmd_numb++;
+}
 
 void	do_thing(t_pip *pip, int *pipfd, int option)
 {
@@ -21,7 +28,7 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
 	if (option == 1)
 	{
-		dup2(pipfd[1], STDOUT_FILENO);
+		dup_3(pipfd[1], STDOUT_FILENO);
 		close(pipfd[0]);
 	}
 	execve(cmd, argv, pip->envp);
@@ -36,21 +43,16 @@ int	exec_mid(t_pip *pip)
 
 	while (pip->cmd_numb < pip->cmd_total)
 	{
-		if (pipe(pipfd) == -1)
-			error("pipe");
+		pipe_2(pipfd);
 		pid = fork();
 		if (pid == 0)
 			do_thing(pip, pipfd, 1);
 		else if (pid > 0)
-		{
-			dup2(pipfd[0], STDIN_FILENO);
-			close(pipfd[1]);
-			pip->cmd_numb++;
-		}
+			eterate_it(pipfd, pip);
 		else if (pid < 0)
 			error("fork");
 	}
-	dup2(pip->outfd, STDOUT_FILENO);
+	dup_3(pip->outfd, STDOUT_FILENO);
 	pid = fork();
 	if (pid == 0)
 		do_thing(pip, pipfd, 2);
@@ -65,28 +67,18 @@ int	pip_it(t_pip *pip)
 {
 	int		pipfd[2];
 	int		pid;
-	char	**argv;
-	char	*cmd;
 	int		i;
 
 	i = 0;
-	dup2(pip->infd, STDIN_FILENO);
-	close(pip->infd);
-	pipe(pipfd);
+	dup_3(pip->infd, STDIN_FILENO);
+	pipe_2(pipfd);
 	dup2(pipfd[1], STDOUT_FILENO);
 	pid = fork();
 	if (pid == 0)
-	{
-		close(pipfd[0]);
-		cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
-		argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
-		execve(cmd, argv, pip->envp);
-		error(cmd);
-	}
+		execute_the_child(pipfd, pip);
 	else if (pid > 0)
 	{
-		dup2(pipfd[0], STDIN_FILENO);
-		close(pipfd[0]);
+		dup_3(pipfd[0], STDIN_FILENO);
 		close(pipfd[1]);
 		pip->cmd_numb++;
 		i = exec_mid(pip);
@@ -101,33 +93,26 @@ int	main(int argc, char **argv, char **envp)
 	t_pip	pip;
 	int		i;
 
-	pip.argc = argc;
-	pip.argv = argv;
-	pip.cmd_numb = 1;
-	pip.envp = envp;
+	set_1(&pip, argc, argv, envp);
 	if (argc < 5)
 		return (1);
 	pip.outfd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0777);
 	if (argc >= 6 && !ft_strcmp(argv[1], "here_doc"))
 	{
 		here_doc_it(&pip);
-		pip.infd = open("read_in_line", O_RDONLY, 0777);
-		pip.cmd_start = 2;
+		set_2(&pip, "read_in_line", 2);
 	}
 	else
-	{
-		pip.infd = open(argv[1], O_RDONLY, 0777);
-		pip.cmd_start = 1;
-	}
+		set_2(&pip, argv[1], 1);
 	pip.cmd_total = argc - 2 - pip.cmd_start;
 	if (pip.infd == -1 || pip.outfd == -1)
 		error(argv[1]);
 	i = pip_it(&pip);
-	close(pip.infd);
-	close(pip.outfd);
 	while (i != 0 && waitpid(i, &i, 0) > 0)
 		;
 	while (wait(NULL) > 0)
 		;
-	return (unlink("read_in_line"), WEXITSTATUS(i));
+	close_final();
+	unlink("read_in_line");
+	return (WEXITSTATUS(i));
 }
