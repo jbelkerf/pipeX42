@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 16:01:24 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/09 14:43:08 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 17:02:36 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define LIBFT_H
 
 # include <unistd.h>
-# include <stddef.h>
 # include <stdlib.h>
 
 typedef struct s_list

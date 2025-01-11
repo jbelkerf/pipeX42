@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 16:52:35 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 17:03:43 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <sys/wait.h>
 # include <unistd.h>
-# include <errno.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdio.h>
