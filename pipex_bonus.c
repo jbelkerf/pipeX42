@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 12:38:16 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 13:01:19 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,11 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 	{
 		dup2(pipfd[1], STDOUT_FILENO);
 		close(pipfd[0]);
-		execve(cmd, argv, pip->envp);
-		error(cmd);
 	}
-	else if (option == 2)
-	{
-		execve(cmd, argv, pip->envp);
-		error(cmd);
-	}
+	execve(cmd, argv, pip->envp);
+	free(cmd);
+	free_array(argv);
+	error(cmd);
 }
 
 void	exec_mid(t_pip *pip)

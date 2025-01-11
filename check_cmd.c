@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 12:54:51 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 13:01:50 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	free_array(char **str)
 		free(str[i]);
 		i++;
 	}
+	free(str);
 }
 
 char	**extract_pathvariable(char **envp)
