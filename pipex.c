@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 13:19:42 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 14:11:24 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,5 @@ int	main(int argc, char **argv, char **envp)
 	while (wait(&j) > 0)
 		;
 	close(pip.infd);
-    system("leaks pipex");
 	return (WEXITSTATUS(i));
 }
