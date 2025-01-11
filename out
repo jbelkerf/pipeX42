@@ -1,0 +1,4 @@
+NAME = pipex
+	$(CC) $(CFLAGS) $(M_OBJ) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(B_OBJ) $(LIBFT) -o $(NAME)
+	rm -f $(NAME)
