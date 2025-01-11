@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 13:01:19 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 15:15:18 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,11 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 		close(pipfd[0]);
 	}
 	execve(cmd, argv, pip->envp);
-	free(cmd);
 	free_array(argv);
 	error(cmd);
 }
 
-void	exec_mid(t_pip *pip)
+int	exec_mid(t_pip *pip)
 {
 	int	pid;
 	int	pipfd[2];
@@ -57,15 +56,20 @@ void	exec_mid(t_pip *pip)
 		do_thing(pip, pipfd, 2);
 	else if (pid == -1)
 		error("fork");
+	else
+		return (pid);
+	return (0);
 }
 
-void	pip_it(t_pip *pip)
+int	pip_it(t_pip *pip)
 {
 	int		pipfd[2];
 	int		pid;
 	char	**argv;
 	char	*cmd;
+	int		i;
 
+	i = 0;
 	dup2(pip->infd, STDIN_FILENO);
 	close(pip->infd);
 	pipe(pipfd);
@@ -85,10 +89,11 @@ void	pip_it(t_pip *pip)
 		close(pipfd[0]);
 		close(pipfd[1]);
 		pip->cmd_numb++;
-		exec_mid(pip);
+		i = exec_mid(pip);
 	}
 	else if (pid == -1)
 		error("fork");
+	return (i);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -117,9 +122,12 @@ int	main(int argc, char **argv, char **envp)
 	pip.cmd_total = argc - 2 - pip.cmd_start;
 	if (pip.infd == -1 || pip.outfd == -1)
 		error(argv[1]);
-	pip_it(&pip);
+	i = pip_it(&pip);
 	close(pip.infd);
 	close(pip.outfd);
-	while (waitpid(-1, &i, 0) > 0);
+	while (i != 0 && waitpid(i, &i, 0) > 0)
+		;
+	while (wait(NULL) > 0)
+		;
 	return (unlink("read_in_line"), WEXITSTATUS(i));
 }

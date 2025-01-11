@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 14:11:24 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 15:10:17 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ int	exec_mid(t_pip *pip)
 		do_thing(pip);
 	else if (pid == -1)
 		error("fork");
-	return (pid);
+	else
+		return (pid);
+	return (0);
 }
 
 int	pip_it(t_pip *pip)
@@ -76,7 +78,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_pip	pip;
 	int		i;
-	int		j;
 
 	pip.argc = argc;
 	pip.argv = argv;
@@ -90,9 +91,9 @@ int	main(int argc, char **argv, char **envp)
 	if (pip.infd == -1)
 		error(argv[1]);
 	i = pip_it(&pip);
-	while (waitpid(i, &i, 0) > 0)
+	while (i != 0 && waitpid(i, &i, 0) > 0)
 		;
-	while (wait(&j) > 0)
+	while (wait(NULL) > 0)
 		;
 	close(pip.infd);
 	return (WEXITSTATUS(i));
