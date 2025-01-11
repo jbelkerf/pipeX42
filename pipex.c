@@ -20,7 +20,6 @@ void	do_thing(t_pip *pip)
 	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
 	execve(cmd, argv, pip->envp);
-	free(cmd);
 	free_array(argv);
 	error(cmd);
 }
@@ -96,5 +95,6 @@ int	main(int argc, char **argv, char **envp)
 	while (wait(&j) > 0)
 		;
 	close(pip.infd);
+    system("leaks pipex");
 	return (WEXITSTATUS(i));
 }
