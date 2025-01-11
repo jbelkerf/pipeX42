@@ -6,14 +6,14 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 13:02:28 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/11 13:08:39 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEADER_H
 # define HEADER_H
 
-#include <sys/wait.h>
+# include <sys/wait.h>
 # include <unistd.h>
 # include <errno.h>
 # include <stdlib.h>
