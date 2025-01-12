@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ner-roui <ner-roui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 22:11:28 by ner-roui         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:32:25 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	do_thing(t_pip *pip)
 	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
 	execve(cmd, argv, pip->envp);
-	//free_array(argv);
+	free_array(argv);
 	error(cmd);
 }
 
@@ -84,10 +84,10 @@ int	main(int argc, char **argv, char **envp)
 	if (pip.infd == -1)
 		error(argv[1]);
 	i = pip_it(&pip);
-	// while (i != 0 && waitpid(i, &i, 0) > 0)
-	// 	;
-	// while (wait(NULL) > 0)
-	// 	;
+	while (i != 0 && waitpid(i, &i, 0) > 0)
+		;
+	while (wait(NULL) > 0)
+		;
 	close_final();
 	return (WEXITSTATUS(i));
 }

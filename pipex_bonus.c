@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ner-roui <ner-roui@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 22:12:14 by ner-roui         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:55:37 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ int	main(int argc, char **argv, char **envp)
 	i = pip_it(&pip);
 	while (i != 0 && waitpid(i, &i, 0) > 0)
 		;
-	// while (wait(NULL) > 0)
-	// 	;
+	while (wait(NULL) > 0)
+		;
 	close_final();
 	unlink("read_in_line");
 	return (WEXITSTATUS(i));
