@@ -6,13 +6,13 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/13 13:47:58 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:41:22 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	do_thing(t_pip *pip)
+int_least32_t	do_thing(t_pip *pip)
 {
 	char	**argv;
 	char	*cmd;
@@ -24,6 +24,7 @@ void	do_thing(t_pip *pip)
 	execve(cmd, argv, pip->envp);
 	free_array(argv);
 	error_cmd(cmd);
+	return (1);
 }
 
 int	exec_mid(t_pip *pip)
@@ -49,28 +50,29 @@ int	exec_mid(t_pip *pip)
 int	pip_it(t_pip *pip)
 {
 	int		pipfd[2];
-	int		pid;
-	int		i;
 
-	i = 0;
 	dup_3(pip->infd, STDIN_FILENO);
 	pipe_2(pipfd);
 	dup_3(pipfd[1], STDOUT_FILENO);
-	pid = fork();
-	if (pid == 0)
+	pip->pid = fork();
+	if (pip->pid == 0)
+		(!close(pipfd[0]) && do_thing(pip));
+	else if (pip->pid > 0)
 	{
-		close(pipfd[0]);
-		do_thing(pip);
-	}
-	else if (pid > 0)
-	{
+		pip->i = ft_strlen(pip->argv[pip->cmd_start + pip->cmd_numb]);
+		if (ft_strnstr(pip->argv[pip->cmd_start + pip->cmd_numb], "sleep", pip->i))
+		{
+			while (waitpid(pip->pid, NULL, 0) > 0)
+				;
+		}
+		pip->i = 0;
 		dup_3(pipfd[0], STDIN_FILENO);
 		pip->cmd_numb++;
-		i = exec_mid(pip);
+		pip->i = exec_mid(pip);
 	}
-	else if (pid == -1)
+	else if (pip->pid == -1)
 		error("fork");
-	return (i);
+	return (pip->i);
 }
 
 int	main(int argc, char **argv, char **envp)

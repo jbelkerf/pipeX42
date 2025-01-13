@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/13 10:31:46 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:27:32 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ typedef struct ap{
 	int		cmd_numb;
 	int		cmd_total;
 	int		cmd_start;
+	int		i;
+	int		pid;
 }	t_pip;
 
 void	error_cmd(char *str);
