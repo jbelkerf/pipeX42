@@ -61,38 +61,39 @@ char	**extract_pathvariable(char **envp)
 	while (envp[i])
 	{
 		if (!ft_strncmp("PATH", envp[i], 4))
-			path_var = envp[i];
+		{
+			path_var = *(envp + i ) + 5;
+			paths = ft_split2(path_var, ':');
+			return (paths);
+		}
 		i++;
 	}
-	path_var = path_var +5;
-	paths = ft_split2(path_var, ':');
-	return (paths);
+	return (NULL);
 }
 
 char	*check_cmd(char *cmd, char **envp)
 {
 	char	**paths;
 	int		i;
-	int		fd;
 	char	*pcmd;
 	char	*tmp;
 
 	i = 0;
+	if (access(cmd, X_OK) != -1)
+		return (cmd);
 	paths = ft_split(cmd, ' ');
 	pcmd = ft_strdup(paths[0]);
 	cmd = pcmd;
 	free_array(paths);
 	paths = extract_pathvariable(envp);
-	while (paths[i])
+	while (paths && paths[i])
 	{
 		tmp = paths[i];
 		paths[i] = ft_strjoin(paths[i], cmd);
 		free(tmp);
-		fd = access(paths[i], X_OK);
-		if (fd != -1)
+		if (access(paths[i], X_OK) != -1)
 			return (paths[i]);
 		i++;
 	}
-	free_array(paths);
-	return (command_not_found(pcmd), NULL);
+	return (free_array(paths), NULL);
 }
