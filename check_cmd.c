@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 15:18:30 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/13 10:15:57 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,15 @@ void	error(char *str)
 	ft_putstr_fd("JBash: ", 2);
 	ft_putstr_fd(str, 2);
 	perror(" ");
+	exit(EXIT_FAILURE);
+}
+
+void	error_cmd(char *str)
+{
+	ft_putstr_fd("JBash: ", 2);
+	ft_putstr_fd(str, 2);
+	perror(" ");
+	free(str);
 	exit(EXIT_FAILURE);
 }
 

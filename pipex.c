@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 16:32:25 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/13 10:15:11 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	do_thing(t_pip *pip)
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
 	execve(cmd, argv, pip->envp);
 	free_array(argv);
-	error(cmd);
+	error_cmd(cmd);
 }
 
 int	exec_mid(t_pip *pip)
