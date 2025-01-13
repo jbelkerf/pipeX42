@@ -14,6 +14,12 @@
 
 void	eterate_it(int *pipfd, t_pip *pip)
 {
+	pip->i = ft_strlen(pip->argv[pip->cmd_start + pip->cmd_numb - 1]);
+	if (ft_strnstr(pip->argv[pip->cmd_start + pip->cmd_numb - 1], "sleep", pip->i))
+	{
+		while (waitpid(pip->pid, NULL, 0) > 0)
+			;
+	}
 	dup_3(pipfd[0], STDIN_FILENO);
 	close(pipfd[1]);
 	pip->cmd_numb++;
@@ -24,8 +30,8 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 	char	**argv;
 	char	*cmd;
 
-	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
-	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
+	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb - 1], pip->envp);
+	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb - 1], ' ');
 	if (option == 1)
 	{
 		dup_3(pipfd[1], STDOUT_FILENO);
@@ -66,26 +72,24 @@ int	exec_mid(t_pip *pip)
 int	pip_it(t_pip *pip)
 {
 	int		pipfd[2];
-	int		pid;
-	int		i;
 
-	i = 0;
 	dup_3(pip->infd, STDIN_FILENO);
 	pipe_2(pipfd);
 	dup2(pipfd[1], STDOUT_FILENO);
-	pid = fork();
-	if (pid == 0)
+	pip->pid = fork();
+	if (pip->pid == 0)
 		execute_the_child(pipfd, pip);
-	else if (pid > 0)
+	else if (pip->pid > 0)
 	{
+		pip->i = 0;
 		dup_3(pipfd[0], STDIN_FILENO);
 		close(pipfd[1]);
 		pip->cmd_numb++;
-		i = exec_mid(pip);
+		pip->i = exec_mid(pip);
 	}
-	else if (pid == -1)
+	else if (pip->pid == -1)
 		error("fork");
-	return (i);
+	return (pip->i);
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -12,7 +12,7 @@
 
 #include "header.h"
 
-int_least32_t	do_thing(t_pip *pip)
+int	do_thing(t_pip *pip)
 {
 	char	**argv;
 	char	*cmd;
@@ -55,8 +55,8 @@ int	pip_it(t_pip *pip)
 	pipe_2(pipfd);
 	dup_3(pipfd[1], STDOUT_FILENO);
 	pip->pid = fork();
-	if (pip->pid == 0)
-		(!close(pipfd[0]) && do_thing(pip));
+	if (pip->pid == 0 && (!close(pipfd[0])) && (do_thing(pip)))
+		;
 	else if (pip->pid > 0)
 	{
 		pip->i = ft_strlen(pip->argv[pip->cmd_start + pip->cmd_numb]);
