@@ -78,7 +78,7 @@ char	*check_cmd(char *cmd, char **envp)
 	char	*pcmd;
 	char	*tmp;
 
-	i = 0;
+	i = -1;
 	if (access(cmd, X_OK) != -1)
 		return (cmd);
 	paths = ft_split(cmd, ' ');
@@ -86,14 +86,16 @@ char	*check_cmd(char *cmd, char **envp)
 	cmd = pcmd;
 	free_array(paths);
 	paths = extract_pathvariable(envp);
-	while (paths && paths[i])
+	while (paths && paths[++i])
 	{
 		tmp = paths[i];
 		paths[i] = ft_strjoin(paths[i], cmd);
 		free(tmp);
 		if (access(paths[i], X_OK) != -1)
-			return (paths[i]);
-		i++;
+		{
+			tmp = ft_strdup(paths[i]);
+			return (free_array(paths), tmp);
+		}
 	}
-	return (free_array(paths), NULL);
+	return (NULL);
 }
