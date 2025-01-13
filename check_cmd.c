@@ -96,5 +96,5 @@ char	*check_cmd(char *cmd, char **envp)
 	}
 	if (paths == NULL)
 		return (NULL);
-	return (command_not_found(pcmd), NULL);
+	return ();
 }
