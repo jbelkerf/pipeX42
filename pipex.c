@@ -18,7 +18,10 @@ int	do_thing(t_pip *pip)
 	char	*cmd;
 
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
-	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
+	if (ft_strnstr(cmd , "awk", ft_strlen(cmd)))
+		argv = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "' ");
+	else
+		argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
 	if (cmd == NULL)
 		cmd = ft_strdup(argv[0]);
 	execve(cmd, argv, pip->envp);

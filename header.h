@@ -51,5 +51,7 @@ void	execve_2(char *cmd, char **argm, char **envp);
 void	execute_the_child(int *pipfd, t_pip *pip);
 void	close_final(void);
 void	close_2(int fd1, int fd2);
+char	**ft_split3(char const *s, char *set);
+int		is_set(char c, char *set);
 
 #endif

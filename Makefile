@@ -18,11 +18,12 @@ CFLAGS = -Wall -Wextra -Werror
 
 LIBFT = ./libft/libft.a
 
-M_SRC =   ft_split2.c check_cmd.c pipex.c pipex_utils.c pipex_utils1.c
+M_SRC =   ft_split2.c check_cmd.c pipex.c pipex_utils.c pipex_utils1.c     \
+ft_split3.c 
 
 B_SRC = ft_split2.c check_cmd.c  ./get_the_next_line/get_next_line_utils.c \
 ./get_the_next_line/get_next_line.c pipex_bonus.c here_doc.c pipex_utils.c \
-pipex_utils1.c
+pipex_utils1.c ft_split3.c 
 
 M_OBJ = $(M_SRC:.c=.o)
 

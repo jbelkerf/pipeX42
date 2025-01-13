@@ -31,7 +31,10 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 	char	*cmd;
 
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb - 1], pip->envp);
-	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb - 1], ' ');
+	if (ft_strnstr(cmd , "awk", ft_strlen(cmd)))
+		argv = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb - 1], "' ");
+	else
+		argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb - 1], ' ');
 	if (option == 1)
 	{
 		dup_3(pipfd[1], STDOUT_FILENO);
