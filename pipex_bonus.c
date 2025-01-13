@@ -24,8 +24,8 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 	char	**argv;
 	char	*cmd;
 
-	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
+	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
 	if (option == 1)
 	{
 		dup_3(pipfd[1], STDOUT_FILENO);
@@ -33,7 +33,7 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 	}
 	execve(cmd, argv, pip->envp);
 	free_array(argv);
-	error(cmd);
+	error_cmd(cmd);
 }
 
 int	exec_mid(t_pip *pip)

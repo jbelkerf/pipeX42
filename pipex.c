@@ -17,8 +17,8 @@ void	do_thing(t_pip *pip)
 	char	**argv;
 	char	*cmd;
 
-	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
+	argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
 	execve(cmd, argv, pip->envp);
 	free_array(argv);
 	error_cmd(cmd);

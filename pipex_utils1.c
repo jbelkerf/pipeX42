@@ -21,6 +21,8 @@ void	execute_the_child(int *pipfd, t_pip *pip)
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
 	argm = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
 	execve_2(cmd, argm, pip->envp);
+	free_array(argm);
+	error_cmd(cmd);
 }
 
 void	close_final(void)
