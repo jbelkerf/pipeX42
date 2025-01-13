@@ -92,10 +92,9 @@ char	*check_cmd(char *cmd, char **envp)
 		paths[i] = ft_strjoin(paths[i], cmd);
 		free(tmp);
 		if (access(paths[i], X_OK) != -1)
-		{
-			tmp = ft_strdup(paths[i]);
-			return (free_array(paths), tmp);
-		}
+			return (tmp = ft_strdup(paths[i]), free_array(paths), tmp);
 	}
-	return (NULL);
+	if (paths == NULL)
+		return (NULL);
+	return ();
 }
