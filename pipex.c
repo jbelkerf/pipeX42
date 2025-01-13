@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/13 15:41:22 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:20:15 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ int	do_thing(t_pip *pip)
 	char	*cmd;
 
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
-	if (ft_strnstr(cmd , "awk", ft_strlen(cmd)))
-		argv = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "' ");
-	else
-		argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
+	argv = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "\' \"");
 	if (cmd == NULL)
 		cmd = ft_strdup(argv[0]);
 	execve(cmd, argv, pip->envp);

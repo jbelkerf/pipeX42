@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:02:34 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 16:51:37 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:21:08 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ void	execute_the_child(int *pipfd, t_pip *pip)
 
 	close(pipfd[0]);
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
-	if (ft_strnstr(cmd , "awk", ft_strlen(cmd)))
-		argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "' ");
-	else
-		argm = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb], ' ');
+	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "\" \'");
 	execve_2(cmd, argm, pip->envp);
 	free_array(argm);
 	error_cmd(cmd);

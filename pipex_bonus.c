@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 16:55:37 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/13 17:20:54 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,8 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 	char	*cmd;
 
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb - 1], pip->envp);
-	if (ft_strnstr(cmd , "awk", ft_strlen(cmd)))
-		argv = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb - 1], "' ");
-	else
-		argv = ft_split(pip->argv[pip->cmd_start + pip->cmd_numb - 1], ' ');
+	
+	argv = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb - 1], "\' \"");
 	if (option == 1)
 	{
 		dup_3(pipfd[1], STDOUT_FILENO);
