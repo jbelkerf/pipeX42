@@ -110,8 +110,6 @@ int	main(int argc, char **argv, char **envp)
 	i = pip_it(&pip);
 	while (i != 0 && waitpid(i, &i, 0) > 0)
 		;
-	while (wait(NULL) > 0)
-		;
 	close_final();
 	unlink("read_in_line");
 	return (WEXITSTATUS(i));
