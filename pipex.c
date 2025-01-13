@@ -26,13 +26,13 @@ void	do_thing(t_pip *pip)
 	error_cmd(cmd);
 }
 
-int	exec_mid(t_pip *pip)
+void	exec_mid(t_pip *pip)
 {
 	int		pid;
 	char	*path;
 
 	path = pip->argv[pip->argc - 1];
-	pip->outfd = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	pip->outfd = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	if (pip->outfd == -1)
 		error(pip->argv[pip->argc - 1]);
 	dup_3(pip->outfd, STDOUT_FILENO);
@@ -41,18 +41,13 @@ int	exec_mid(t_pip *pip)
 		do_thing(pip);
 	else if (pid == -1)
 		error("fork");
-	else
-		return (pid);
-	return (0);
 }
 
-int	pip_it(t_pip *pip)
+void	pip_it(t_pip *pip)
 {
 	int		pipfd[2];
 	int		pid;
-	int		i;
 
-	i = 0;
 	dup_3(pip->infd, STDIN_FILENO);
 	pipe_2(pipfd);
 	dup_3(pipfd[1], STDOUT_FILENO);
@@ -66,11 +61,10 @@ int	pip_it(t_pip *pip)
 	{
 		dup_3(pipfd[0], STDIN_FILENO);
 		pip->cmd_numb++;
-		i = exec_mid(pip);
+		exec_mid(pip);
 	}
 	else if (pid == -1)
 		error("fork");
-	return (i);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -85,8 +79,8 @@ int	main(int argc, char **argv, char **envp)
 	pip.cmd_total = 2;
 	if (pip.infd == -1)
 		error(argv[1]);
-	i = pip_it(&pip);
-	while (i != 0 && waitpid(i, &i, 0) > 0)
+	pip_it(&pip);
+	while (wait(&i) > 0)
 		;
 	close_final();
 	return (WEXITSTATUS(i));

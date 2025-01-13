@@ -36,7 +36,7 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 	error_cmd(cmd);
 }
 
-int	exec_mid(t_pip *pip)
+void	exec_mid(t_pip *pip)
 {
 	int	pid;
 	int	pipfd[2];
@@ -58,18 +58,13 @@ int	exec_mid(t_pip *pip)
 		do_thing(pip, pipfd, 2);
 	else if (pid == -1)
 		error("fork");
-	else
-		return (pid);
-	return (0);
 }
 
-int	pip_it(t_pip *pip)
+void	pip_it(t_pip *pip)
 {
 	int		pipfd[2];
 	int		pid;
-	int		i;
 
-	i = 0;
 	dup_3(pip->infd, STDIN_FILENO);
 	pipe_2(pipfd);
 	dup2(pipfd[1], STDOUT_FILENO);
@@ -81,11 +76,10 @@ int	pip_it(t_pip *pip)
 		dup_3(pipfd[0], STDIN_FILENO);
 		close(pipfd[1]);
 		pip->cmd_numb++;
-		i = exec_mid(pip);
+		exec_mid(pip);
 	}
 	else if (pid == -1)
 		error("fork");
-	return (i);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -107,8 +101,8 @@ int	main(int argc, char **argv, char **envp)
 	pip.cmd_total = argc - 2 - pip.cmd_start;
 	if (pip.infd == -1 || pip.outfd == -1)
 		error(argv[1]);
-	i = pip_it(&pip);
-	while (i != 0 && waitpid(i, &i, 0) > 0)
+	pip_it(&pip);
+	while (wait(&i) > 0)
 		;
 	close_final();
 	unlink("read_in_line");
