@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/13 10:15:57 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:17:54 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,5 @@ char	*check_cmd(char *cmd, char **envp)
 	}
 	if (paths == NULL)
 		return (NULL);
-	return ();
+	return (command_not_found(pcmd), NULL);
 }
