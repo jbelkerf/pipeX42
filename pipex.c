@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/13 17:20:15 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:12:32 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	pip_it(t_pip *pip)
 	else if (pip->pid > 0)
 	{
 		pip->i = ft_strlen(pip->argv[pip->cmd_start + pip->cmd_numb]);
-		if (ft_strnstr(pip->argv[pip->cmd_start + pip->cmd_numb], "sleep", pip->i))
+		pip->str = pip->argv[pip->cmd_start + pip->cmd_numb];
+		if (ft_strnstr(pip->str, "sleep", pip->i))
 		{
 			while (waitpid(pip->pid, NULL, 0) > 0)
 				;

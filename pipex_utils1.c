@@ -6,11 +6,19 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:02:34 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/13 17:21:08 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:13:43 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+void	error(char *str)
+{
+	ft_putstr_fd("JBash: ", 2);
+	ft_putstr_fd(str, 2);
+	perror(" ");
+	exit(EXIT_FAILURE);
+}
 
 void	execute_the_child(int *pipfd, t_pip *pip)
 {
@@ -39,7 +47,7 @@ void	close_2(int fd1, int fd2)
 
 int	is_set(char c, char *set)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (set[i])

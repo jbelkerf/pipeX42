@@ -6,19 +6,11 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/13 15:17:54 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/14 15:14:09 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
-
-void	error(char *str)
-{
-	ft_putstr_fd("JBash: ", 2);
-	ft_putstr_fd(str, 2);
-	perror(" ");
-	exit(EXIT_FAILURE);
-}
 
 void	error_cmd(char *str)
 {
@@ -62,7 +54,7 @@ char	**extract_pathvariable(char **envp)
 	{
 		if (!ft_strncmp("PATH", envp[i], 4))
 		{
-			path_var = *(envp + i ) + 5;
+			path_var = (*(envp + i) + 5);
 			paths = ft_split2(path_var, ':');
 			return (paths);
 		}
