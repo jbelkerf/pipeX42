@@ -87,9 +87,7 @@ void	pip_it(t_pip *pip)
 int	main(int argc, char **argv, char **envp)
 {
 	t_pip	pip;
-	int		i;
 
-	i = 0;
 	set_1(&pip, argc, argv, envp);
 	if (argc < 5)
 		return (1);

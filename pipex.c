@@ -43,7 +43,7 @@ void	exec_mid(t_pip *pip)
 	else if (pid == -1)
 		error("fork");
 	else
-		pip->last_pid = pid;
+		waitpid(pid, &pip->last_pid, 0);
 }
 
 void	pip_it(t_pip *pip)
@@ -69,7 +69,6 @@ void	pip_it(t_pip *pip)
 int	main(int argc, char **argv, char **envp)
 {
 	t_pip	pip;
-	int		i;
 
 	set_1(&pip, argc, argv, envp);
 	if (argc != 5)
@@ -79,8 +78,8 @@ int	main(int argc, char **argv, char **envp)
 	if (pip.infd == -1)
 		error(argv[1]);
 	pip_it(&pip);
-	while (waitpid(pip.last_pid, &i, 0) > 0)
-		;
 	close_final();
-	return (WEXITSTATUS(i));
+	while (wait(NULL) > 0)
+		;
+	return (WEXITSTATUS(pip.last_pid));
 }
