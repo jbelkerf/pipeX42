@@ -6,7 +6,7 @@
 #    By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/08 11:57:31 by jbelkerf          #+#    #+#              #
-#    Updated: 2025/01/11 16:28:16 by jbelkerf         ###   ########.fr        #
+#    Updated: 2025/01/16 16:53:16 by jbelkerf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,4 +46,4 @@ clean:
 fclean: clean
 	make fclean -C ./libft
 	rm -f $(NAME)
-re: $(fclean) $(all)
+re: fclean all
