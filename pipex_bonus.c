@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/14 15:11:06 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:09:24 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,10 @@
 
 void	eterate_it(int *pipfd, t_pip *pip)
 {
-	pip->i = ft_strlen(pip->argv[pip->cmd_start + pip->cmd_numb - 1]);
-	pip->str = pip->argv[pip->cmd_start + pip->cmd_numb - 1];
-	if (ft_strnstr(pip->str, "sleep", pip->i))
-	{
-		while (waitpid(pip->pid, NULL, 0) > 0)
-			;
-	}
 	dup_3(pipfd[0], STDIN_FILENO);
 	close(pipfd[1]);
 	pip->cmd_numb++;
+	pip->i++;
 }
 
 void	do_thing(t_pip *pip, int *pipfd, int option)
@@ -33,6 +27,7 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb - 1], pip->envp);
 	argv = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb - 1], "\' \"");
+	dprintf(2, "%s\n", cmd);
 	if (option == 1)
 	{
 		dup_3(pipfd[1], STDOUT_FILENO);
@@ -43,12 +38,12 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 	error_cmd(cmd);
 }
 
-int	exec_mid(t_pip *pip)
+void	exec_mid(t_pip *pip)
 {
 	int	pid;
 	int	pipfd[2];
 
-	while (pip->cmd_numb < pip->cmd_total)
+	while (pip->cmd_numb <= pip->cmd_total)
 	{
 		pipe_2(pipfd);
 		pid = fork();
@@ -66,11 +61,10 @@ int	exec_mid(t_pip *pip)
 	else if (pid == -1)
 		error("fork");
 	else
-		return (pid);
-	return (0);
+		waitpid(pid, &pip->last_pid, 0);
 }
 
-int	pip_it(t_pip *pip)
+void	pip_it(t_pip *pip)
 {
 	int		pipfd[2];
 
@@ -82,15 +76,13 @@ int	pip_it(t_pip *pip)
 		execute_the_child(pipfd, pip);
 	else if (pip->pid > 0)
 	{
-		pip->i = 0;
 		dup_3(pipfd[0], STDIN_FILENO);
 		close(pipfd[1]);
 		pip->cmd_numb++;
-		pip->i = exec_mid(pip);
+		exec_mid(pip);
 	}
 	else if (pip->pid == -1)
 		error("fork");
-	return (pip->i);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -98,10 +90,11 @@ int	main(int argc, char **argv, char **envp)
 	t_pip	pip;
 	int		i;
 
+	i = 0;
 	set_1(&pip, argc, argv, envp);
 	if (argc < 5)
 		return (1);
-	pip.outfd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	pip.outfd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	if (argc >= 6 && !ft_strcmp(argv[1], "here_doc"))
 	{
 		here_doc_it(&pip);
@@ -112,10 +105,10 @@ int	main(int argc, char **argv, char **envp)
 	pip.cmd_total = argc - 2 - pip.cmd_start;
 	if (pip.infd == -1 || pip.outfd == -1)
 		error(argv[1]);
-	i = pip_it(&pip);
-	while (i != 0 && waitpid(i, &i, 0) > 0)
-		;
+	pip_it(&pip);
 	close_final();
+	while (wait(NULL) > 0)
+		;
 	unlink("read_in_line");
-	return (WEXITSTATUS(i));
+	return (WEXITSTATUS(pip.last_pid));
 }

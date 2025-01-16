@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/14 15:26:21 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:09:13 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ int	do_thing(t_pip *pip)
 	return (1);
 }
 
-int	exec_mid(t_pip *pip)
+void	exec_mid(t_pip *pip)
 {
 	int		pid;
 	char	*path;
 
 	path = pip->argv[pip->argc - 1];
-	pip->outfd = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	pip->outfd = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	if (pip->outfd == -1)
 		error(pip->argv[pip->argc - 1]);
 	dup_3(pip->outfd, STDOUT_FILENO);
@@ -43,11 +43,10 @@ int	exec_mid(t_pip *pip)
 	else if (pid == -1)
 		error("fork");
 	else
-		return (pid);
-	return (0);
+		pip->last_pid = pid;
 }
 
-int	pip_it(t_pip *pip)
+void	pip_it(t_pip *pip)
 {
 	int		pipfd[2];
 
@@ -59,21 +58,12 @@ int	pip_it(t_pip *pip)
 		;
 	else if (pip->pid > 0)
 	{
-		pip->i = ft_strlen(pip->argv[pip->cmd_start + pip->cmd_numb]);
-		pip->str = pip->argv[pip->cmd_start + pip->cmd_numb];
-		if (ft_strnstr(pip->str, "sleep", pip->i))
-		{
-			while (waitpid(pip->pid, NULL, 0) > 0)
-				;
-		}
-		pip->i = 0;
 		dup_3(pipfd[0], STDIN_FILENO);
 		pip->cmd_numb++;
-		pip->i = exec_mid(pip);
+		exec_mid(pip);
 	}
 	else if (pip->pid == -1)
 		error("fork");
-	return (pip->i);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -88,8 +78,8 @@ int	main(int argc, char **argv, char **envp)
 	pip.cmd_total = 2;
 	if (pip.infd == -1)
 		error(argv[1]);
-	i = pip_it(&pip);
-	while (i != 0 && waitpid(i, &i, 0) > 0)
+	pip_it(&pip);
+	while (waitpid(pip.last_pid, &i, 0) > 0)
 		;
 	close_final();
 	return (WEXITSTATUS(i));
