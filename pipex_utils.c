@@ -24,6 +24,7 @@ void	set_2(t_pip *pip, char *file_path, int option)
 {
 	char	*file;
 
+	file = pip->argv[pip->argc - 1];
 	if (option == 2)
 	{
 		pip->infd = open(file_path, O_RDONLY, 0777);
