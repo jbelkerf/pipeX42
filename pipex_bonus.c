@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/16 11:09:24 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:23:44 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb - 1], pip->envp);
 	argv = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb - 1], "\' \"");
-	dprintf(2, "%s\n", cmd);
 	if (option == 1)
 	{
 		dup_3(pipfd[1], STDOUT_FILENO);
@@ -94,7 +93,6 @@ int	main(int argc, char **argv, char **envp)
 	set_1(&pip, argc, argv, envp);
 	if (argc < 5)
 		return (1);
-	pip.outfd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0666);
 	if (argc >= 6 && !ft_strcmp(argv[1], "here_doc"))
 	{
 		here_doc_it(&pip);
