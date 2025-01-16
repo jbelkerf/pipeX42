@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 14:45:57 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/11 16:52:06 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:50:21 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ void	clear_delemeter(t_pip *pip)
 
 	fd1 = open("read_line", O_RDONLY, 0777);
 	fd2 = open ("read_in_line", O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (fd1 == -1 || fd2 == -1)
+		error("open here_doc");
 	while (1)
 	{
 		str = get_next_line(fd1);
 		if (str)
 		{
 			str[ft_strlen(str) - 1] = 0;
-			if (!ft_strcmp(str, pip->argv[2]))
+			if (!ft_strcmp(str, pip->argv[2]) && free_and_true(str))
 				break ;
-			else
-			{
-				str[ft_strlen(str)] = '\n';
-				write(fd2, str, ft_strlen(str));
-			}
+			str[ft_strlen(str)] = '\n';
+			write(fd2, str, ft_strlen(str));
+			free(str);
 		}
 		else
 			break ;

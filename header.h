@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:24:53 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/16 10:04:43 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:49:49 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	dup_3(int a, int b);
 void	pipe_2(int *pipefd);
 void	execve_2(char *cmd, char **argm, char **envp);
 void	execute_the_child(int *pipfd, t_pip *pip);
-void	close_final(void);
+int		free_and_true(char *str);
 void	close_2(int fd1, int fd2);
 char	**ft_split3(char const *s, char *set);
 int		is_set(char c, char *set);

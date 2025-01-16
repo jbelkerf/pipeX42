@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:20:33 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/14 15:14:09 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/16 15:44:07 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	**extract_pathvariable(char **envp)
 	int		i;
 
 	i = 0;
-	while (envp[i])
+	while (envp && envp[i])
 	{
 		if (!ft_strncmp("PATH", envp[i], 4))
 		{

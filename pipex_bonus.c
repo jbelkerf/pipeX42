@@ -6,7 +6,7 @@
 /*   By: jbelkerf <jbelkerf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 15:04:54 by jbelkerf          #+#    #+#             */
-/*   Updated: 2025/01/16 11:23:44 by jbelkerf         ###   ########.fr       */
+/*   Updated: 2025/01/16 16:48:05 by jbelkerf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	eterate_it(int *pipfd, t_pip *pip)
 	dup_3(pipfd[0], STDIN_FILENO);
 	close(pipfd[1]);
 	pip->cmd_numb++;
-	pip->i++;
 }
 
 void	do_thing(t_pip *pip, int *pipfd, int option)
@@ -102,7 +101,7 @@ int	main(int argc, char **argv, char **envp)
 	if (pip.infd == -1 || pip.outfd == -1)
 		error(argv[1]);
 	pip_it(&pip);
-	close_final();
+	close_2(0, 1);
 	while (wait(NULL) > 0)
 		;
 	unlink("read_in_line");
