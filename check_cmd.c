@@ -15,11 +15,6 @@
 void	error_cmd(char *str)
 {
 	ft_putstr_fd("JBash: ", 2);
-	if (str == NULL)
-	{
-		ft_putstr_fd("commahghjdhfjqdhjhd\n", 2);
-		exit(127);
-	}
 	ft_putstr_fd(str, 2);
 	perror(" ");
 	free(str);
