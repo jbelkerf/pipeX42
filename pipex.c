@@ -18,7 +18,7 @@ int	do_thing(t_pip *pip)
 	char	*cmd;
 
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
-	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "\' \"");
+	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "\' \t\"");
 	if (cmd == NULL )
 	{
 		if (argm[0] == NULL)

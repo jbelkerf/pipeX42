@@ -24,8 +24,8 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 	char	**argm;
 	char	*cmd;
 
-	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb - 1], pip->envp);
-	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb - 1], "\' \"");
+	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
+	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "\' \t\"");
 	if (cmd == NULL )
 	{
 		if (argm[0] == NULL)
@@ -48,7 +48,7 @@ void	exec_mid(t_pip *pip)
 	int	pid;
 	int	pipfd[2];
 
-	while (pip->cmd_numb <= pip->cmd_total)
+	while (pip->cmd_numb < pip->cmd_total)
 	{
 		pipe_2(pipfd);
 		pid = fork();

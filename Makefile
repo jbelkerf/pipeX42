@@ -29,7 +29,8 @@ M_OBJ = $(M_SRC:.c=.o)
 
 B_OBJ = $(B_SRC:.c=.o)
 
-			
+		##	-g -fsanitize=address<
+
 all: $(M_OBJ)
 	$(MAKE) -C ./libft 
 	$(CC) $(CFLAGS) -g -fsanitize=address $(M_OBJ) $(LIBFT) -o $(NAME)

@@ -15,6 +15,11 @@
 void	error_cmd(char *str)
 {
 	ft_putstr_fd("JBash: ", 2);
+	if (str == NULL)
+	{
+		ft_putstr_fd("commahghjdhfjqdhjhd\n", 2);
+		exit(127);
+	}
 	ft_putstr_fd(str, 2);
 	perror(" ");
 	free(str);
@@ -75,7 +80,10 @@ char	*check_cmd(char *cmd, char **envp)
 		return (NULL);
 	paths = ft_split(cmd, ' ');
 	if (access(paths[0], X_OK) != -1)
-		return (free_array(paths), paths[0]);
+	{
+		tmp = ft_strdup(paths[0]);
+		return (free_array(paths), tmp);
+	}
 	pcmd = ft_strdup(paths[0]);
 	cmd = pcmd;
 	free_array(paths);

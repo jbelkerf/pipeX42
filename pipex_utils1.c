@@ -31,10 +31,16 @@ void	execute_the_child(int *pipfd, t_pip *pip)
 {
 	char	**argm;
 	char	*cmd;
-
 	close(pipfd[0]);
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
-	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "\" \'");
+	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "\" \t\'");
+	if (argm && cmd == NULL )
+	{
+		if (argm[0] == NULL)
+			cmd = ft_strdup("");
+		else
+			cmd = ft_strdup(argm[0]);
+	}
 	execve_2(cmd, argm, pip->envp);
 	free_array(argm);
 	error_cmd(cmd);
