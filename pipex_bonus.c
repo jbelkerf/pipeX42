@@ -100,7 +100,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc >= 6 && !ft_strcmp(argv[1], "here_doc"))
 	{
 		here_doc_it(&pip);
-		set_2(&pip, "read_in_line", 2);
+		set_2(&pip, "read_line", 2);
 	}
 	else
 		set_2(&pip, argv[1], 1);
@@ -111,6 +111,6 @@ int	main(int argc, char **argv, char **envp)
 	close_2(0, 1);
 	while (wait(NULL) > 0)
 		;
-	unlink("read_in_line");
+	unlink("read_line");
 	return (WEXITSTATUS(pip.last_pid));
 }
