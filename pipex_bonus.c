@@ -26,8 +26,13 @@ void	do_thing(t_pip *pip, int *pipfd, int option)
 
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb - 1], pip->envp);
 	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb - 1], "\' \"");
-	if (cmd == NULL)
-		cmd = ft_strdup(argm[0]);
+	if (cmd == NULL )
+	{
+		if (argm[0] == NULL)
+			cmd = ft_strdup("");
+		else
+			cmd = ft_strdup(argm[0]);
+	}
 	if (option == 1)
 	{
 		dup_3(pipfd[1], STDOUT_FILENO);

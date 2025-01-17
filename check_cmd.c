@@ -71,6 +71,8 @@ char	*check_cmd(char *cmd, char **envp)
 	char	*tmp;
 
 	i = -1;
+	if (cmd[0] == 0)
+		return (NULL);
 	paths = ft_split(cmd, ' ');
 	if (access(paths[0], X_OK) != -1)
 		return (free_array(paths), paths[0]);

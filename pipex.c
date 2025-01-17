@@ -19,8 +19,13 @@ int	do_thing(t_pip *pip)
 
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
 	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "\' \"");
-	if (cmd == NULL)
-		cmd = ft_strdup(argm[0]);
+	if (cmd == NULL )
+	{
+		if (argm[0] == NULL)
+			cmd = ft_strdup("");
+		else
+			cmd = ft_strdup(argm[0]);
+	}
 	execve(cmd, argm, pip->envp);
 	free_array(argm);
 	error_cmd(cmd);
