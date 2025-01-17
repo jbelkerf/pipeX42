@@ -97,6 +97,6 @@ char	*check_cmd(char *cmd, char **envp)
 			return (tmp = ft_strdup(paths[i]), free_array(paths), tmp);
 	}
 	if (paths == NULL)
-		return (NULL);
+		return (free(cmd), NULL);
 	return (command_not_found(pcmd), NULL);
 }
