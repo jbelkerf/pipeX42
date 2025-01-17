@@ -21,18 +21,20 @@ void	eterate_it(int *pipfd, t_pip *pip)
 
 void	do_thing(t_pip *pip, int *pipfd, int option)
 {
-	char	**argv;
+	char	**argm;
 	char	*cmd;
 
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb - 1], pip->envp);
-	argv = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb - 1], "\' \"");
+	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb - 1], "\' \"");
+	if (cmd == NULL)
+		cmd = ft_strdup(argm[0]);
 	if (option == 1)
 	{
 		dup_3(pipfd[1], STDOUT_FILENO);
 		close(pipfd[0]);
 	}
-	execve(cmd, argv, pip->envp);
-	free_array(argv);
+	execve(cmd, argm, pip->envp);
+	free_array(argm);
 	error_cmd(cmd);
 }
 
