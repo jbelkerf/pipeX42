@@ -41,7 +41,6 @@ void	error_cmd(char *str);
 char	**ft_split2(char const *s, char c);
 char	*check_cmd(char *cmd, char **envp, int i);
 void	here_doc_it(t_pip *pip);
-void	clear_delemeter(t_pip *pip);
 void	print_prompt(void);
 void	error(char *str);
 void	free_array(char **str);

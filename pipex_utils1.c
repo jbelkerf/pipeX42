@@ -33,7 +33,7 @@ void	execute_the_child(int *pipfd, t_pip *pip)
 	char	*cmd;
 
 	close(pipfd[0]);
-	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
+	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp, -1);
 	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "\" \t\'");
 	if (argm && cmd == NULL )
 	{
