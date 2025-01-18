@@ -15,7 +15,7 @@
 /*the first while is for skip the isspace
  *the first if condition is for handling the sign, - or + but just for once
  *the last while is for handling the actual number by mining the string
- *			 str checkin each char for number than add it in mathimatical way to n
+ *	str checkin each char for number than add it in mathimatical way to n
  *finally we return the minned number n multipled by the sign factor
 */
 int	ft_atoi(const char *str)

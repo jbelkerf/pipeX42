@@ -21,7 +21,8 @@
 # include "./libft/libft.h"
 # include "./get_the_next_line/get_next_line.h"
 
-typedef struct ap{
+typedef struct ap
+{
 	int		infd;
 	int		outfd;
 	int		argc;
@@ -38,7 +39,7 @@ typedef struct ap{
 
 void	error_cmd(char *str);
 char	**ft_split2(char const *s, char c);
-char	*check_cmd(char *cmd, char **envp);
+char	*check_cmd(char *cmd, char **envp, int i);
 void	here_doc_it(t_pip *pip);
 void	clear_delemeter(t_pip *pip);
 void	print_prompt(void);
