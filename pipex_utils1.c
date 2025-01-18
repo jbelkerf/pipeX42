@@ -31,6 +31,7 @@ void	execute_the_child(int *pipfd, t_pip *pip)
 {
 	char	**argm;
 	char	*cmd;
+
 	close(pipfd[0]);
 	cmd = check_cmd(pip->argv[pip->cmd_start + pip->cmd_numb], pip->envp);
 	argm = ft_split3(pip->argv[pip->cmd_start + pip->cmd_numb], "\" \t\'");
