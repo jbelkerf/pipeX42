@@ -29,17 +29,15 @@ M_OBJ = $(M_SRC:.c=.o)
 
 B_OBJ = $(B_SRC:.c=.o)
 
-		##	-g -fsanitize=address<
-
 all: $(M_OBJ)
 	$(MAKE) -C ./libft 
-	$(CC) $(CFLAGS) -g -fsanitize=address $(M_OBJ) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(M_OBJ) $(LIBFT) -o $(NAME)
 	
 %.o: %.c header.h
 	$(CC) $(CFLAGS) -c $< -o $@
 bonus: $(B_OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(CFLAGS) -g -fsanitize=address $(B_OBJ) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(B_OBJ) $(LIBFT) -o $(NAME)
 	
 clean:
 	$(MAKE) clean -C ./libft 
