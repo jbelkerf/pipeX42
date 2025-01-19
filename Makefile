@@ -31,13 +31,13 @@ B_OBJ = $(B_SRC:.c=.o)
 
 all: $(M_OBJ)
 	$(MAKE) -C ./libft 
-	$(CC) $(CFLAGS) $(M_OBJ) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) -g -fsanitize=address $(M_OBJ) $(LIBFT) -o $(NAME)
 	
 %.o: %.c header.h
 	$(CC) $(CFLAGS) -c $< -o $@
 bonus: $(B_OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(CFLAGS) $(B_OBJ) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) -g -fsanitize=address $(B_OBJ) $(LIBFT) -o $(NAME)
 	
 clean:
 	$(MAKE) clean -C ./libft 

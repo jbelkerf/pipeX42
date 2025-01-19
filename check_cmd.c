@@ -71,7 +71,7 @@ char	*check_cmd(char *cmd, char **envp, int i)
 
 	paths = ft_split3(cmd, "\'\" \t");
 	if (paths == NULL || paths[0] == NULL)
-		return (free(paths), NULL);
+		return (free(paths), command_not_found(ft_strdup(cmd)), NULL);
 	if (access(paths[0], X_OK) != -1)
 		return (tmp = ft_strdup(paths[0]), free_array(paths), tmp);
 	pcmd = ft_strdup(paths[0]);
