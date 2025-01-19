@@ -52,7 +52,7 @@ char	**extract_pathvariable(char **envp)
 	i = 0;
 	while (envp && envp[i])
 	{
-		if (!ft_strncmp("PATH", envp[i], 4))
+		if (!ft_strncmp("PATH=", envp[i], 5))
 		{
 			path_var = (*(envp + i) + 5);
 			paths = ft_split2(path_var, ':');
@@ -69,9 +69,9 @@ char	*check_cmd(char *cmd, char **envp, int i)
 	char	*pcmd;
 	char	*tmp;
 
-	if (cmd[0] == 0)
-		return (NULL);
-	paths = ft_split3(cmd, " \t");
+	paths = ft_split3(cmd, "\'\" \t");
+	if (paths == NULL || paths[0] == NULL)
+		return (free(paths), NULL);
 	if (access(paths[0], X_OK) != -1)
 		return (tmp = ft_strdup(paths[0]), free_array(paths), tmp);
 	pcmd = ft_strdup(paths[0]);
