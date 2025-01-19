@@ -87,6 +87,6 @@ char	*check_cmd(char *cmd, char **envp, int i)
 			return (tmp = ft_strdup(paths[i]), free_array(paths), tmp);
 	}
 	if (paths == NULL)
-		return (free(cmd), NULL);
-	return (command_not_found(pcmd), NULL);
+		return (free_array(paths), free(cmd), NULL);
+	return (free_array(paths), command_not_found(pcmd), NULL);
 }
